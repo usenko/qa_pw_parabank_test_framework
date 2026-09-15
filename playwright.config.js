@@ -24,6 +24,8 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: https://example.com
+    baseURL: 'https://parabank.parasoft.com',
+    trace: 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
