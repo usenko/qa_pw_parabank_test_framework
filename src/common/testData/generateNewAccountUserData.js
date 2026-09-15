@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker';
 export function generateNewAccountUserData(logger = null) {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
+  const password = faker.internet.password();
 
   const account = {
     firstname: firstName,
@@ -13,10 +14,9 @@ export function generateNewAccountUserData(logger = null) {
     zipcode: faker.location.zipCode(),
     phone: faker.phone.number(),
     ssn: faker.string.numeric('###-##-####'),
-
     username: `${firstName}_${lastName}`.replaceAll(`'`).toLowerCase(),
-    email: `${firstName}_${faker.internet.email()}`.toLowerCase(),
-    password: faker.internet.password(),
+    password: password,
+    confirmPassword: password,
   };
 
   if (logger) {

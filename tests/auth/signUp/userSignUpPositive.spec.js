@@ -1,6 +1,7 @@
 import { test } from '../../_fixtures/fixtures';
 
-test('Successful `Sign in` flow test', async ({ page, signUpPage }) => {
+test('Successful `Sign in` flow test', async ({ signUpPage, account }) => {
   await signUpPage.openUrl();
-  await page.pause();
+  await signUpPage.clickLinkToRegister();
+  await signUpPage.submitSignUpForm(account);
 });
