@@ -11,7 +11,7 @@ export class BasePage {
     return await testStep(title, stepToRun, this.userId);
   }
 
-  async openUrl(url = '/') {
+  async open(url = '/') {
     await this.step(`Navigate to ${url}`, async () => {
       await this.page.goto(url);
     });

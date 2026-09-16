@@ -62,7 +62,20 @@ export class SignUpPage extends BasePage {
 
   async assertSuccessfullyRegisterMessage(username) {
     await this.step(`Assert welcome message for ${username}`, async () => {
-      //await expect(this.errorMessage).toContainText(messageText);
+      const messageText = `Welcome ${username}`;
+      await expect(
+        this.page.getByRole('heading', {
+          name: 'Welcome',
+        }),
+      ).toContainText(messageText);
+    });
+  }
+
+  async assertErrorMessageIsShown(message) {
+    await this.step(`Assert the error ${message} is shown`, async () => {
+      await expect(
+        this.page.getByRole('cell', { name: message }),
+      ).toContainText(message);
     });
   }
 }
