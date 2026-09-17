@@ -21,7 +21,18 @@ export class AccountNavMenu {
 
   async clickLogOut() {
     await this.step('Click "Log Out" link"', async () => {
-      await this.accountNavMenuItem('Log Out').click();
+      await Promise.all([
+        this.page.waitForResponse(response => {
+          console.log('👉 МЕТОД:', response.request().method());
+          console.log('👉 URL:', response.url());
+
+          return (
+            response.url().includes('index.htm') && response.status() === 200
+          );
+        }),
+        this.accountNavMenuItem('Log Out').click(),
+      ]);
+      await this.page.waitForURL('**/index.htm?ConnType=JDBC');
     });
   }
 

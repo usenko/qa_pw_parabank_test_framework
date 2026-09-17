@@ -5,7 +5,14 @@ test.beforeEach(async ({ page, account }) => {
   await signUpAccount(page, account);
 });
 
-test('Successful `Sign in` flow test', async ({ page, accountNavMenu }) => {
+test('Successful `Sign in` flow test', async ({
+  accountNavMenu,
+  homePage,
+  account,
+}) => {
   await accountNavMenu.clickLogOut();
-  await page.pause();
+  await homePage.fillInputFieldByName('Username', account.username);
+  await homePage.fillInputFieldByName('Password', account.password);
+  await homePage.clickLoginButton();
+  await homePage.assertMainTextTitle('Accounts Overview');
 });

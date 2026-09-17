@@ -17,9 +17,13 @@ export class BasePage {
     });
   }
 
-  async assertPageToHaveMainTitle(title) {
-    await this.step(`Assert page title is ${title}`, async () => {
-      await expect(this.page).toHaveTitle(title);
+  getMainTitle(titleName) {
+    return this.page.getByRole('heading', { name: titleName });
+  }
+
+  async assertMainTextTitle(titleName) {
+    await this.step(`Assert the main title has ${titleName} text`, async () => {
+      await expect(this.getMainTitle(titleName)).toContainText(titleName);
     });
   }
 }

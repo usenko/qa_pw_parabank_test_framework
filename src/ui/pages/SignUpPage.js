@@ -1,6 +1,6 @@
-import { expect } from '../../../common/helpers/pwHelpers';
-import { BasePage } from '../BasePage';
-import { SIGN_UP_FIELDS } from '../../../common/signUpFields';
+import { expect } from '../../common/helpers/pwHelpers';
+import { BasePage } from './BasePage';
+import { SIGN_UP_FIELDS } from '../../common/signUpFields';
 
 export class SignUpPage extends BasePage {
   constructor(page, userId = 0) {
@@ -28,8 +28,6 @@ export class SignUpPage extends BasePage {
     await this.step(`Click the 'Register' button`, async () => {
       await Promise.all([
         this.page.waitForResponse(response => {
-          console.log('👉 МЕТОД:', response.request().method());
-          console.log('👉 URL:', response.url());
           return (
             response.url().includes('register') &&
             response.request().method() === 'POST' &&

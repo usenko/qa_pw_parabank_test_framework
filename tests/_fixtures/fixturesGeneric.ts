@@ -50,6 +50,7 @@ export const test = base.extend<
     },
     { scope: 'test', auto: true },
   ],
+
   addAllureTestHierarchy: [
     async ({ logger }, use, testInfo) => {
       const fileName = testInfo.file;
