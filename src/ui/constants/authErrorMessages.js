@@ -10,3 +10,8 @@ export const VALIDATION_AUTH_ERRORS = {
   PASSWORD: 'Password is required.',
   CONFIRMPASSWORD: 'Password confirmation is required.',
 };
+
+export const LOGIN_ERRORS = {
+  MISSING_CREDENTIALS: 'Please enter a username and password.',
+  INVALID_CREDENTIALS: 'The username and password could not be verified.',
+};
