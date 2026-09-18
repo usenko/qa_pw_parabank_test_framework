@@ -15,3 +15,6 @@ export const LOGIN_ERRORS = {
   MISSING_CREDENTIALS: 'Please enter a username and password.',
   INVALID_CREDENTIALS: 'The username and password could not be verified.',
 };
+
+export const SUCCESS_CUSTOMER_LOOKUP_MESSAGE =
+  'Your login information was located successfully. You are now logged in.';

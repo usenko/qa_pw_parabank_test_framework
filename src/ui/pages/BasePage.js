@@ -4,7 +4,7 @@ export class BasePage {
   constructor(page, userId = 0) {
     this.page = page;
     this.userId = userId;
-    this.mainTitle = this.page.locator('');
+    this.rightPanel = this.page.locator('#rightPanel');
   }
 
   async step(title, stepToRun) {
@@ -24,6 +24,12 @@ export class BasePage {
   async assertMainTextTitle(titleName) {
     await this.step(`Assert the main title has ${titleName} text`, async () => {
       await expect(this.getMainTitle(titleName)).toContainText(titleName);
+    });
+  }
+
+  async assertElementTextIsVisible(text) {
+    await this.step(`Verify text element ${text} is visible`, async () => {
+      await expect(this.rightPanel.getByText(text)).toBeVisible();
     });
   }
 }

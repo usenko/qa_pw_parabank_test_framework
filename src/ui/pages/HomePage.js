@@ -8,6 +8,9 @@ export class HomePage extends BasePage {
     this.userId = userId;
     this.loginPanel = this.page.locator('#loginPanel');
     this.loginButton = this.loginPanel.getByRole('button', { name: 'Log in' });
+    this.forgotLoginButton = this.loginPanel.getByRole('link', {
+      name: 'Forgot login info?',
+    });
   }
 
   inputTextLocator(inputName) {
@@ -20,17 +23,41 @@ export class HomePage extends BasePage {
     });
   }
 
-  async clickLoginButton() {
+  async clickLoginButton({ isSuccess = true } = {}) {
     await this.step(`Click the 'Log in' button`, async () => {
+      if (isSuccess) {
+        await Promise.all([
+          this.page.waitForResponse(response => {
+            return (
+              response.url().includes('overview') && response.status() === 200
+            );
+          }),
+          this.loginButton.click(),
+        ]);
+        await this.page.waitForURL('**/overview.htm');
+      } else {
+        await Promise.all([
+          this.page.waitForResponse(
+            response =>
+              response.url().includes('login.htm') && response.status() === 200,
+          ),
+          this.loginButton.click(),
+        ]);
+      }
+    });
+  }
+
+  async clickForgotLink() {
+    await this.step(`Click the 'Forgot login info' button`, async () => {
       await Promise.all([
-        this.page.waitForResponse(response => {
-          return (
-            response.url().includes('overview') && response.status() === 200
-          );
-        }),
-        await this.loginButton.click(),
+        this.page.waitForResponse(
+          response =>
+            response.url().includes('lookup.htm') && response.status() === 200,
+        ),
+        this.forgotLoginButton.click(),
       ]);
-      await this.page.waitForURL('**/overview.htm');
+
+      await this.page.waitForURL('**/lookup.htm');
     });
   }
 }
