@@ -16,5 +16,8 @@ export const LOGIN_ERRORS = {
   INVALID_CREDENTIALS: 'The username and password could not be verified.',
 };
 
-export const SUCCESS_CUSTOMER_LOOKUP_MESSAGE =
-  'Your login information was located successfully. You are now logged in.';
+export const CUSTOMER_LOOKUP_MESSAGES = {
+  SUCCESS:
+    'Your login information was located successfully. You are now logged in.',
+  ERROR: 'The customer information provided could not be found.',
+};

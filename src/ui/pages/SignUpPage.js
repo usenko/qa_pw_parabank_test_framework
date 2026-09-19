@@ -68,12 +68,4 @@ export class SignUpPage extends BasePage {
       ).toContainText(messageText);
     });
   }
-
-  async assertErrorMessageIsShown(message) {
-    await this.step(`Assert the error ${message} is shown`, async () => {
-      await expect(
-        this.page.getByRole('cell', { name: message }),
-      ).toContainText(message);
-    });
-  }
 }

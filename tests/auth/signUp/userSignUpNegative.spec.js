@@ -60,13 +60,16 @@ test.describe('Sign up negative tests', () => {
     await signUpPage.clickLinkToRegister();
   });
   testParameters.forEach(({ message, title, emptyField }) => {
-    test(`Sign up with ${title}`, async ({ signUpPage, account }) => {
+    test(`Should display validation error when ${title} field`, async ({
+      signUpPage,
+      account,
+    }) => {
       const payload = {
         ...account,
         [emptyField]: '',
       };
       await signUpPage.submitSignUpForm(payload);
-      await signUpPage.assertErrorMessageIsShown(message);
+      await signUpPage.assertValidationMessageIsShown(message);
     });
   });
 });

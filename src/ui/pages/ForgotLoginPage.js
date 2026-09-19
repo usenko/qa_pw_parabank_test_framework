@@ -67,22 +67,10 @@ export class ForgotLoginPage extends BasePage {
   //   });
   // }
 
-  async assertSuccessfullyRegisterMessage(username) {
-    await this.step(`Assert welcome message for ${username}`, async () => {
-      const messageText = `Welcome ${username}`;
-      await expect(
-        this.page.getByRole('heading', {
-          name: 'Welcome',
-        }),
-      ).toContainText(messageText);
-    });
-  }
-
-  async assertErrorMessageIsShown(message) {
-    await this.step(`Assert the error ${message} is shown`, async () => {
-      await expect(
-        this.page.getByRole('cell', { name: message }),
-      ).toContainText(message);
+  async assertUsernameRetrieved(username) {
+    await this.step(`Assert username ${username} is displayed`, async () => {
+      const message = new RegExp(`Username:\\s*${username}`, 'i');
+      await expect(this.page.getByText(message)).toBeVisible();
     });
   }
 }

@@ -32,4 +32,12 @@ export class BasePage {
       await expect(this.rightPanel.getByText(text)).toBeVisible();
     });
   }
+
+  async assertValidationMessageIsShown(message) {
+    await this.step(`Assert the error ${message} is shown`, async () => {
+      await expect(
+        this.page.getByRole('cell', { name: message }),
+      ).toContainText(message);
+    });
+  }
 }
