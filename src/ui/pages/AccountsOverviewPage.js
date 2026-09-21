@@ -7,9 +7,7 @@ export class AccountsOverviewPage extends BasePage {
     super(page);
     this.page = page;
     this.userId = userId;
-    this.findLoginButton = this.page.getByRole('button', {
-      name: 'Find My Login Info',
-    });
+    this.detailsTable = this.page.locator('#accountDetails').getByRole('table');
   }
 
   getAccountCellByName(cellname) {
@@ -18,6 +16,16 @@ export class AccountsOverviewPage extends BasePage {
 
   getAccountCellByIndex(index = 0) {
     return this.page.getByRole('cell').nth(index);
+  }
+
+  getAccountLink(accountId) {
+    return this.page.getByRole('link', { name: accountId });
+  }
+
+  async clickAccountLink(accountId) {
+    await this.step(`Click on 'Account activity' link`, async () => {
+      await this.getAccountLink(accountId).click();
+    });
   }
 
   async getAccountId() {
@@ -34,7 +42,7 @@ export class AccountsOverviewPage extends BasePage {
     return this.page.getByRole('row').filter({ hasText: accountId });
   }
 
-  async getAccountAmountById(accountId, columnName) {
+  async getCellAccountAmountById(accountId, columnName) {
     return await this.step(
       `Get ${columnName} for account:${accountId}`,
       async () => {
@@ -43,7 +51,6 @@ export class AccountsOverviewPage extends BasePage {
           'available amount': 2,
         };
         const columnIndex = columns[columnName.toLowerCase()];
-        console.log('columnIndex', columnIndex);
         const textBalance = await this.accountRowLocatorById(accountId)
           .locator(this.getAccountCellByIndex(columnIndex))
           .textContent();
@@ -51,6 +58,33 @@ export class AccountsOverviewPage extends BasePage {
         return parseAndFormatNumber(textBalance);
       },
     );
+  }
+
+  async getAccountDetailsData() {
+    await this.detailsTable.waitFor({ state: 'visible' });
+
+    const rows = this.detailsTable.getByRole('row');
+    const rowCount = await rows.count();
+    const accountData = {};
+
+    for (let i = 0; i <= rowCount; i++) {
+      const currentRow = rows.nth(i);
+      const cells = currentRow.getByRole('cell');
+
+      if ((await cells.count()) >= 2) {
+        const rawKey = await cells.nth(0).innerText();
+        const key = rawKey.replace(':', '').trim();
+        const value = await cells.nth(1).innerText();
+
+        if (value.includes('$')) {
+          accountData[key] = parseAndFormatNumber(value);
+        } else {
+          accountData[key] = value;
+        }
+      }
+    }
+    console.log('accountData', accountData);
+    return accountData;
   }
 
   async assertAccountIdIsVisible(accountId) {

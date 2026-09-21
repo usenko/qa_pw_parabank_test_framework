@@ -15,9 +15,8 @@ export function parseAndFormatNumber(str) {
     return '0.00';
   }
 
-  const strWithDot = str.replace(',', '.');
-  const cleanedText = strWithDot.replace(/[^0-9.-]+/g, '');
-  const numericText = parseFloat(cleanedText);
+  const cleanStr = str.replace(/[$, \s]/g, '');
+  const numericText = parseFloat(cleanStr);
   if (isNaN(numericText)) {
     return '0.00';
   }
