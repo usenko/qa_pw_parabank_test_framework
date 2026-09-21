@@ -24,11 +24,21 @@ export class AccountsOverviewPage extends BasePage {
 
   async clickAccountLink(accountId) {
     await this.step(`Click on 'Account activity' link`, async () => {
-      await this.getAccountLink(accountId).click();
+      await Promise.all([
+        this.page.waitForResponse(response => {
+          return (
+            response.url().includes('activity') && response.status() === 200
+          );
+        }),
+        this.page.waitForURL(`**/activity.htm?id=${accountId}`, {
+          waitUntil: 'domcontentloaded',
+        }),
+        this.getAccountLink(accountId).click(),
+      ]);
     });
   }
 
-  async getAccountId() {
+  async getAccountIdByLink() {
     return await this.step(`Get default account Id`, async () => {
       return await this.page
         .getByRole('row')
@@ -61,8 +71,6 @@ export class AccountsOverviewPage extends BasePage {
   }
 
   async getAccountDetailsData() {
-    await this.detailsTable.waitFor({ state: 'visible' });
-
     const rows = this.detailsTable.getByRole('row');
     const rowCount = await rows.count();
     const accountData = {};
@@ -83,8 +91,14 @@ export class AccountsOverviewPage extends BasePage {
         }
       }
     }
-    console.log('accountData', accountData);
     return accountData;
+  }
+
+  async assertAccountDetailData(keyData, expectedValue, actualData) {
+    await this.step(`Assert "${keyData}" account detail data`, async () => {
+      expect(actualData).toHaveProperty(keyData);
+      expect(actualData[keyData]).toEqual(expectedValue);
+    });
   }
 
   async assertAccountIdIsVisible(accountId) {

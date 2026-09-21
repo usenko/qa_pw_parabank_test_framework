@@ -25,7 +25,7 @@ test.describe('Accounts Overview Flow', () => {
   //       accountsOverviewPage,
   //     }) => {
   //       await accountsOverviewPage.open('/parabank/overview.htm');
-  //       const accountId = await accountsOverviewPage.getAccountId();
+  //       const accountId = await accountsOverviewPage.getAccountIdByLink();
   //       const balance = await accountsOverviewPage.getCellAccountAmountById(
   //         accountId,
   //         'Balance',
@@ -41,12 +41,12 @@ test.describe('Accounts Overview Flow', () => {
   //     });
   //   });
   test.describe('Account Details', () => {
-    test(`Accounts overview shows default account id and balances`, async ({
+    test(`Should match expected values in account details table`, async ({
       accountsOverviewPage,
       page,
     }) => {
       await accountsOverviewPage.open('/parabank/overview.htm');
-      const accountId = await accountsOverviewPage.getAccountId();
+      const accountId = await accountsOverviewPage.getAccountIdByLink();
       const balance = await accountsOverviewPage.getCellAccountAmountById(
         accountId,
         'Balance',
@@ -56,9 +56,24 @@ test.describe('Accounts Overview Flow', () => {
         'Available Amount',
       );
 
+      const accountDetails = {
+        'Account Number': accountId,
+        'Account Type': 'CHECKING',
+        Balance: balance,
+        Available: amount,
+      };
+
       await accountsOverviewPage.assertAccountIdIsVisible(accountId);
       await accountsOverviewPage.clickAccountLink(accountId);
-      await accountsOverviewPage.getAccountDetailsData();
+      const accountDetailsData =
+        await accountsOverviewPage.getAccountDetailsData();
+      for (const [key, expectedDataValue] of Object.entries(accountDetails)) {
+        await accountsOverviewPage.assertAccountDetailData(
+          key,
+          expectedDataValue,
+          accountDetailsData,
+        );
+      }
       await page.pause();
     });
   });
