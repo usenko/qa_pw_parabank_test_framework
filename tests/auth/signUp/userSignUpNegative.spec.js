@@ -50,8 +50,8 @@ const testParameters = [
   },
   {
     title: 'Empty confirmation password',
-    emptyField: 'confirmPassword',
-    message: VALIDATION_AUTH_ERRORS.CONFIRMPASSWORD,
+    emptyField: 'repeatedPassword',
+    message: VALIDATION_AUTH_ERRORS.REPEATEDPASSWORD,
   },
 ];
 test.describe('Sign up negative tests', () => {

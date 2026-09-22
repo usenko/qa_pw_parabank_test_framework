@@ -8,7 +8,7 @@ export const VALIDATION_AUTH_ERRORS = {
   SSN: 'Social Security Number is required.',
   USERNAME: 'Username is required.',
   PASSWORD: 'Password is required.',
-  CONFIRMPASSWORD: 'Password confirmation is required.',
+  REPEATEDPASSWORD: 'Password confirmation is required.',
 };
 
 export const LOGIN_ERRORS = {

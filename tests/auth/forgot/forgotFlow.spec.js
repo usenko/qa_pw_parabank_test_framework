@@ -38,10 +38,6 @@ test.describe('Forgot credentials Flow', () => {
     }) => {
       const payload = { ...account };
       const username = account.username;
-      delete payload.username;
-      delete payload.phone;
-      delete payload.password;
-      delete payload.confirmPassword;
 
       await homePage.clickForgotLink();
       await homePage.assertMainTextTitle('Customer Lookup');
@@ -55,7 +51,6 @@ test.describe('Forgot credentials Flow', () => {
 
   test.describe('Negative scenarios', () => {
     test(`Should display error message when invalid credentials are provided`, async ({
-      page,
       homePage,
       forgotLoginPage,
     }) => {
@@ -67,11 +62,9 @@ test.describe('Forgot credentials Flow', () => {
       await forgotLoginPage.assertElementTextIsVisible(
         CUSTOMER_LOOKUP_MESSAGES.ERROR,
       );
-      await page.pause();
     });
 
     test(`Should display validation errors for all required fields when form is submitted empty`, async ({
-      page,
       homePage,
       forgotLoginPage,
     }) => {

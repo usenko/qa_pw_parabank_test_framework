@@ -16,7 +16,7 @@ export function generateNewAccountUserData(logger = null) {
     ssn: faker.string.numeric('###-##-####'),
     username: `${firstName}_${lastName}`.replaceAll(`'`).toLowerCase(),
     password: password,
-    confirmPassword: password,
+    repeatedPassword: password,
   };
 
   if (logger) {

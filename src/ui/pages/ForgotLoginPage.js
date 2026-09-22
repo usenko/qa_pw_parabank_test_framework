@@ -1,6 +1,6 @@
 import { expect } from '../../common/helpers/pwHelpers';
 import { BasePage } from './BasePage';
-import { SIGN_UP_FIELDS } from '../../common/signUpFields';
+import { CUSTOMER_LOOKUP_FIELDS } from '../../common/signUpFields';
 
 export class ForgotLoginPage extends BasePage {
   constructor(page, userId = 0) {
@@ -9,19 +9,6 @@ export class ForgotLoginPage extends BasePage {
     this.userId = userId;
     this.findLoginButton = this.getButtonByName('Find My Login Info');
     this.registerLink = this.page.getByRole('link', { name: 'Register' });
-  }
-
-  inputTextLocator(inputName) {
-    return this.page
-      .getByRole('row')
-      .filter({ hasText: inputName })
-      .locator('input');
-  }
-
-  async fillInputFieldByName(inputName, value) {
-    await this.step(`Fill the ${inputName} field`, async () => {
-      await this.inputTextLocator(inputName).fill(value);
-    });
   }
 
   async clickFindLoginButton() {
@@ -39,8 +26,8 @@ export class ForgotLoginPage extends BasePage {
   async submitCustomerLookupForm(account) {
     await this.step(`Fill the 'Customer Lookup' form`, async () => {
       for (const [key, value] of Object.entries(account)) {
-        if (SIGN_UP_FIELDS[key] && value !== undefined) {
-          const fieldName = SIGN_UP_FIELDS[key];
+        if (CUSTOMER_LOOKUP_FIELDS[key] && value !== undefined) {
+          const fieldName = CUSTOMER_LOOKUP_FIELDS[key];
           await this.fillInputFieldByName(fieldName, value);
         }
       }

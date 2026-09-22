@@ -1,6 +1,7 @@
+import { expect } from '../../common/helpers/pwHelpers';
 import { BasePage } from './BasePage';
 
-export class HomePage extends BasePage {
+export class BillPayPage extends BasePage {
   constructor(page, userId = 0) {
     super(page);
     this.page = page;
@@ -9,6 +10,16 @@ export class HomePage extends BasePage {
     this.loginButton = this.loginPanel.getByRole('button', { name: 'Log in' });
     this.forgotLoginButton = this.loginPanel.getByRole('link', {
       name: 'Forgot login info?',
+    });
+  }
+
+  inputTextLocator(inputName) {
+    return this.loginPanel.locator(`input[name="${inputName.toLowerCase()}"]`);
+  }
+
+  async fillInputFieldByName(inputName, value) {
+    await this.step(`Fill the ${inputName} field`, async () => {
+      await this.inputTextLocator(inputName).fill(value);
     });
   }
 

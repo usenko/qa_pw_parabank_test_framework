@@ -25,6 +25,17 @@ export class BasePage {
     return this.page.getByRole('button', { name: buttonName });
   }
 
+  inputTextLocator(inputName) {
+    return this.page.locator(`input[name="${inputName}"]`);
+  }
+
+  async fillInputFieldByName(inputName, value) {
+    await this.step(`Fill the ${inputName} field`, async () => {
+      console.log(inputName);
+      await this.inputTextLocator(inputName).fill(value);
+    });
+  }
+
   async assertMainTextTitle(titleName) {
     await this.step(`Assert the main title has ${titleName} text`, async () => {
       await expect(this.getMainTitle(titleName)).toContainText(titleName);

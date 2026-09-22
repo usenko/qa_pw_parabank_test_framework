@@ -11,19 +11,6 @@ export class SignUpPage extends BasePage {
     this.registerLink = this.page.getByRole('link', { name: 'Register' });
   }
 
-  inputTextLocator(inputName) {
-    return this.page
-      .getByRole('row')
-      .filter({ hasText: inputName })
-      .locator('input');
-  }
-
-  async fillInputFieldByName(inputName, value) {
-    await this.step(`Fill the ${inputName} field`, async () => {
-      await this.inputTextLocator(inputName).fill(value);
-    });
-  }
-
   async clickRegisterButton() {
     await this.step(`Click the 'Register' button`, async () => {
       await Promise.all([
@@ -49,6 +36,7 @@ export class SignUpPage extends BasePage {
   async submitSignUpForm(account) {
     await this.step(`Fill the 'Sign up' form`, async () => {
       for (const [key, value] of Object.entries(account)) {
+        console.log('key', key);
         if (SIGN_UP_FIELDS[key] && value !== undefined) {
           const fieldName = SIGN_UP_FIELDS[key];
           await this.fillInputFieldByName(fieldName, value);
