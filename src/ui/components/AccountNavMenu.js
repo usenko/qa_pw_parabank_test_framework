@@ -23,9 +23,6 @@ export class AccountNavMenu {
     await this.step('Click "Log Out" link"', async () => {
       await Promise.all([
         this.page.waitForResponse(response => {
-          console.log('👉 МЕТОД:', response.request().method());
-          console.log('👉 URL:', response.url());
-
           return (
             response.url().includes('index.htm') && response.status() === 200
           );
@@ -36,5 +33,9 @@ export class AccountNavMenu {
     });
   }
 
-  //await testStep('Sign up account', async () => {});
+  async clickNavLink(name) {
+    await this.step(`Click "${name}" link`, async () => {
+      await this.accountNavMenuItem(name).click();
+    });
+  }
 }

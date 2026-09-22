@@ -83,7 +83,6 @@ test.describe('Forgot credentials Flow', () => {
         const errorMessage = VALIDATION_AUTH_ERRORS[field];
         await forgotLoginPage.assertValidationMessageIsShown(errorMessage);
       }
-      await page.pause();
     });
   });
 });

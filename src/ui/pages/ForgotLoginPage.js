@@ -7,9 +7,7 @@ export class ForgotLoginPage extends BasePage {
     super(page);
     this.page = page;
     this.userId = userId;
-    this.findLoginButton = this.page.getByRole('button', {
-      name: 'Find My Login Info',
-    });
+    this.findLoginButton = this.getButtonByName('Find My Login Info');
     this.registerLink = this.page.getByRole('link', { name: 'Register' });
   }
 

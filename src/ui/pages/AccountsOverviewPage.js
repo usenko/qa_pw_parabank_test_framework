@@ -26,8 +26,11 @@ export class AccountsOverviewPage extends BasePage {
     await this.step(`Click on 'Account activity' link`, async () => {
       await Promise.all([
         this.page.waitForResponse(response => {
+          console.log('👉 URL:', response.url());
           return (
-            response.url().includes('activity') && response.status() === 200
+            response.url().includes('/bank/accounts') &&
+            response.request().method() === 'GET' &&
+            response.status() === 200
           );
         }),
         this.page.waitForURL(`**/activity.htm?id=${accountId}`, {

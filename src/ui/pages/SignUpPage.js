@@ -7,7 +7,7 @@ export class SignUpPage extends BasePage {
     super(page);
     this.page = page;
     this.userId = userId;
-    this.registerButton = this.page.getByRole('button', { name: 'Register' });
+    this.registerButton = this.getButtonByName('Register');
     this.registerLink = this.page.getByRole('link', { name: 'Register' });
   }
 

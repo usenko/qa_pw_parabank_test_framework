@@ -21,6 +21,10 @@ export class BasePage {
     return this.page.getByRole('heading', { name: titleName });
   }
 
+  getButtonByName(buttonName) {
+    return this.page.getByRole('button', { name: buttonName });
+  }
+
   async assertMainTextTitle(titleName) {
     await this.step(`Assert the main title has ${titleName} text`, async () => {
       await expect(this.getMainTitle(titleName)).toContainText(titleName);
