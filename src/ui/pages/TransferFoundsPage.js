@@ -30,7 +30,17 @@ export class TransferFoundsPage extends BasePage {
 
   async clickTransferButton() {
     await this.step(`Click the 'Transfer' button`, async () => {
-      await this.getButtonByName('Transfer').click();
+      await Promise.all([
+        this.page.waitForResponse(response => {
+          return (
+            response.url().includes('bank/transfer') &&
+            response.request().method() === 'POST' &&
+            response.status() === 200
+          );
+        }),
+        this.getButtonByName('Transfer').click(),
+      ]);
+      await this.page.waitForURL('**/transfer.htm');
     });
   }
 }

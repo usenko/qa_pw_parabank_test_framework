@@ -17,7 +17,7 @@ export class ForgotLoginPage extends BasePage {
         this.page.waitForResponse(response => {
           return response.url().includes('lookup') && response.status() === 200;
         }),
-        await this.findLoginButton.click(),
+        this.findLoginButton.click(),
       ]);
       await this.page.waitForURL('**/lookup.htm');
     });

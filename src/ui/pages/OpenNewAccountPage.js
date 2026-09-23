@@ -1,3 +1,4 @@
+import { expect } from '../../common/helpers/pwHelpers';
 import { BasePage } from './BasePage';
 
 export class OpenNewAccountPage extends BasePage {
@@ -11,8 +12,14 @@ export class OpenNewAccountPage extends BasePage {
   }
 
   async selectAccountType(accountType) {
-    await this.step(`Select ${accountType} acount type`, async () => {
+    await this.step(`Select ${accountType} account type`, async () => {
       await this.accountTypeSelect.selectOption({ label: accountType });
+    });
+  }
+
+  async selectAccount(accountId) {
+    await this.step(`Select ${accountId} account`, async () => {
+      await this.accountFromSelect.selectOption({ label: accountId });
     });
   }
 
@@ -23,14 +30,24 @@ export class OpenNewAccountPage extends BasePage {
           console.log('👉 URL:', response.url());
           console.log('👉 Method:', response.request().method());
           return (
-            response.url().includes('/bank/createAccount') &&
+            response.url().includes('bank/createAccount') &&
             response.request().method() === 'POST' &&
             response.status() === 200
           );
         }),
         this.getButtonByName('Open New Account').click(),
       ]);
-      await this.page.waitForURL('**/openaccount.htm');
+      await this.page.waitForURL('**/openaccount.htm', {
+        waitUntil: 'domcontentloaded',
+      });
+    });
+  }
+
+  async getCreatedAccountId() {
+    return await this.step(`Get created account id`, async () => {
+      await expect(this.page.locator('#newAccountId')).toBeVisible();
+      const accountId = await this.newAccountId.textContent();
+      return accountId;
     });
   }
 }

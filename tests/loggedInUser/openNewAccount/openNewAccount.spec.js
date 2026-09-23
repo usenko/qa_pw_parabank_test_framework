@@ -1,5 +1,5 @@
 import { test } from '../../_fixtures/fixtures';
-import { signUpAccount } from '../../../src/ui/actions/auth/signUpAccount';
+import { signUpAccount } from '../../../src/ui/actions/signUpAccount';
 const testParameters = [
   {
     accountType: 'SAVINGS',
@@ -8,22 +8,30 @@ const testParameters = [
     accountType: 'CHECKING',
   },
 ];
-test.beforeEach(async ({ page, account }) => {
-  await signUpAccount(page, account);
-});
 
 test.describe('Open New Account Flow', () => {
-  test(`Should be able to create new Account`, async ({
-    accountsOverviewPage,
-    openNewAccountPage,
-    accountNavMenu,
-    page,
-  }) => {
-    await accountNavMenu.clickNavLink('Open New Account');
-    await accountsOverviewPage.assertMainTextTitle('Open New Account');
-    await openNewAccountPage.selectAccountType('SAVINGS');
-    await openNewAccountPage.clickOpenNewAccountButton();
-    await page.pause();
-    await accountsOverviewPage.assertMainTextTitle('Account Opened!');
+  test.beforeEach(async ({ page, account }) => {
+    await signUpAccount(page, account);
+  });
+  testParameters.forEach(({ accountType }) => {
+    test(`Should be able to create new ${accountType} Account`, async ({
+      accountsOverviewPage,
+      openNewAccountPage,
+      accountNavMenu,
+    }) => {
+      await accountsOverviewPage.open('/parabank/overview.htm');
+      const accountId = await accountsOverviewPage.getAccountIdByLink();
+      await accountNavMenu.clickNavLink('Open New Account');
+      await accountsOverviewPage.assertMainTextTitle('Open New Account');
+      await openNewAccountPage.selectAccountType(accountType);
+      await openNewAccountPage.selectAccount(accountId);
+      await openNewAccountPage.clickOpenNewAccountButton();
+      await openNewAccountPage.assertMainTextTitle('Account Opened!');
+
+      const newAccontId =
+        await openNewAccountPage.getCreatedAccountId(accountId);
+      await accountNavMenu.clickNavLink('Accounts Overview');
+      await accountsOverviewPage.assertAccountIdIsVisible(newAccontId);
+    });
   });
 });

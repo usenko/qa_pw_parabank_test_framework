@@ -21,7 +21,7 @@ export class SignUpPage extends BasePage {
             response.status() === 200
           );
         }),
-        await this.registerButton.click(),
+        this.registerButton.click(),
       ]);
       await this.page.waitForURL('**/register.htm');
     });
@@ -36,7 +36,6 @@ export class SignUpPage extends BasePage {
   async submitSignUpForm(account) {
     await this.step(`Fill the 'Sign up' form`, async () => {
       for (const [key, value] of Object.entries(account)) {
-        console.log('key', key);
         if (SIGN_UP_FIELDS[key] && value !== undefined) {
           const fieldName = SIGN_UP_FIELDS[key];
           await this.fillInputFieldByName(fieldName, value);

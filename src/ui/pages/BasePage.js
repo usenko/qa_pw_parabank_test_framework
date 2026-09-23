@@ -31,7 +31,6 @@ export class BasePage {
 
   async fillInputFieldByName(inputName, value) {
     await this.step(`Fill the ${inputName} field`, async () => {
-      console.log(inputName);
       await this.inputTextLocator(inputName).fill(value);
     });
   }

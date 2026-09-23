@@ -1,5 +1,5 @@
 import { test } from '../../_fixtures/fixtures';
-import { signUpAccount } from '../../../src/ui/actions/auth/signUpAccount';
+import { signUpAccount } from '../../../src/ui/actions/signUpAccount';
 import { LOGIN_ERRORS } from '../../../src/ui/constants/authErrorMessages';
 
 let username;
