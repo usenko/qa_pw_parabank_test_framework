@@ -1,53 +1,40 @@
-import { expect } from '../../common/helpers/pwHelpers';
 import { BasePage } from './BasePage';
+import { BILL_PAYMENT_FIELDS } from '../../common/constants';
+import { expect } from '../../common/helpers/pwHelpers';
 
 export class BillPayPage extends BasePage {
   constructor(page, userId = 0) {
     super(page);
     this.page = page;
     this.userId = userId;
-    this.loginPanel = this.page.locator('#loginPanel');
-    this.loginButton = this.loginPanel.getByRole('button', { name: 'Log in' });
-    this.forgotLoginButton = this.loginPanel.getByRole('link', {
-      name: 'Forgot login info?',
-    });
+    this.sendPaymentButton = this.getButtonByName('Send Payment');
   }
 
-  async clickLoginButton({ isSuccess = true } = {}) {
-    await this.step(`Click the 'Log in' button`, async () => {
-      if (isSuccess) {
-        await Promise.all([
-          this.page.waitForResponse(response => {
-            return (
-              response.url().includes('overview') && response.status() === 200
-            );
-          }),
-          this.loginButton.click(),
-        ]);
-        await this.page.waitForURL('**/overview.htm');
-      } else {
-        await Promise.all([
-          this.page.waitForResponse(
-            response =>
-              response.url().includes('login.htm') && response.status() === 200,
-          ),
-          this.loginButton.click(),
-        ]);
-      }
-    });
-  }
-
-  async clickForgotLink() {
-    await this.step(`Click the 'Forgot login info' button`, async () => {
+  async clickSendPaymentButton() {
+    await this.step(`Click the 'Send Payment' button`, async () => {
       await Promise.all([
-        this.page.waitForResponse(
-          response =>
-            response.url().includes('lookup.htm') && response.status() === 200,
-        ),
-        this.forgotLoginButton.click(),
+        this.page.waitForResponse(response => {
+          return (
+            response.url().includes('/bank/billpay') &&
+            response.request().method() === 'POST' &&
+            response.status() === 200
+          );
+        }),
+        this.sendPaymentButton.click(),
       ]);
+      await this.page.waitForURL('**/billpay.htm');
+    });
+  }
 
-      await this.page.waitForURL('**/lookup.htm');
+  async submitBillPaymentForm(account) {
+    await this.step(`Fill the 'Bill Payment' form`, async () => {
+      for (const [key, value] of Object.entries(account)) {
+        if (BILL_PAYMENT_FIELDS[key] && value !== undefined) {
+          const fieldName = BILL_PAYMENT_FIELDS[key];
+          await this.fillInputFieldByName(fieldName, value);
+        }
+      }
+      await this.clickSendPaymentButton();
     });
   }
 }

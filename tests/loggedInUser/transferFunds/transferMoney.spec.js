@@ -1,6 +1,7 @@
 import { test } from '../../_fixtures/fixtures';
 import { signUpAccount } from '../../../src/ui/actions/signUpAccount';
 import { createNewAccount } from '../../../src/ui/actions/createNewAccount';
+
 const testParameters = [
   {
     accountType: 'SAVINGS',
@@ -22,7 +23,6 @@ testParameters.forEach(({ accountType }) => {
       accountNavMenu,
       transferFundsPage,
       accountsOverviewPage,
-      page,
     }, testInfo) => {
       const newAccountId = testInfo.newAccountId;
       await accountsOverviewPage.open('/parabank/overview.htm');
@@ -37,7 +37,19 @@ testParameters.forEach(({ accountType }) => {
       await transferFundsPage.selectToAccountId(newAccountId);
       await transferFundsPage.clickTransferButton();
       await transferFundsPage.assertMainTextTitle('Transfer Complete!');
-      await page.pause();
+
+      await accountNavMenu.clickNavLink('Accounts Overview');
+      await accountsOverviewPage.assertMainTextTitle('Accounts Overview');
+      const currentBalance =
+        await accountsOverviewPage.getCellAccountAmountById(
+          newAccountId,
+          'Balance',
+        );
+      const totalBalance = initialBalance + 222;
+      await accountsOverviewPage.assertValuesAreEqual(
+        currentBalance,
+        totalBalance,
+      );
     });
   });
 });

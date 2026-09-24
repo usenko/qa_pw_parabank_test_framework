@@ -25,7 +25,7 @@ test.describe('Sign in Flow', () => {
       await homePage.clickLoginButton({ isSuccess: false });
       await homePage.assertMainTextTitle('Error!');
       await homePage.assertElementTextIsVisible(
-        LOGIN_ERRORS.INVALID_CREDENTIALS,
+        LOGIN_ERRORS.invalidCredentials,
       );
     });
 
@@ -35,7 +35,7 @@ test.describe('Sign in Flow', () => {
       await homePage.clickLoginButton({ isSuccess: false });
       await homePage.assertMainTextTitle('Error!');
       await homePage.assertElementTextIsVisible(
-        LOGIN_ERRORS.INVALID_CREDENTIALS,
+        LOGIN_ERRORS.invalidCredentials,
       );
     });
 
@@ -45,7 +45,7 @@ test.describe('Sign in Flow', () => {
       await homePage.clickLoginButton({ isSuccess: false });
       await homePage.assertMainTextTitle('Error!');
       await homePage.assertElementTextIsVisible(
-        LOGIN_ERRORS.MISSING_CREDENTIALS,
+        LOGIN_ERRORS.missingCredentials,
       );
     });
   });

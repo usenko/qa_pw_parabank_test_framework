@@ -1,6 +1,6 @@
 import { expect } from '../../common/helpers/pwHelpers';
 import { BasePage } from './BasePage';
-import { SIGN_UP_FIELDS } from '../../common/signUpFields';
+import { SIGN_UP_FIELDS } from '../../common/constants';
 
 export class SignUpPage extends BasePage {
   constructor(page, userId = 0) {

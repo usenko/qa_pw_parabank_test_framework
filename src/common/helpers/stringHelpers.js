@@ -11,14 +11,14 @@ export function camelCaseToPhrase(str) {
 }
 
 export function parseAndFormatNumber(str) {
-  if (!str || typeof str !== 'string') {
-    return '0.00';
+  if (!str) {
+    return 0;
   }
-
-  const cleanStr = str.replace(/[$, \s]/g, '');
+  const stringValue = typeof str === 'string' ? str : str.toString();
+  const cleanStr = stringValue.replace(/[$, \s]/g, '');
   const numericText = parseFloat(cleanStr);
   if (isNaN(numericText)) {
-    return '0.00';
+    return 0;
   }
-  return numericText.toFixed(2);
+  return Math.round(numericText * 100) / 100;
 }

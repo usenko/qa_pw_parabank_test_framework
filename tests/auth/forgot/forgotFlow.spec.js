@@ -36,6 +36,7 @@ test.describe('Forgot credentials Flow', () => {
       forgotLoginPage,
       account,
     }) => {
+      //Check if account variable is correct
       const payload = { ...account };
       const username = account.username;
 

@@ -1,23 +1,23 @@
 export const VALIDATION_AUTH_ERRORS = {
-  FIRSTNAME: 'First name is required.',
-  LASTNAME: 'Last name is required.',
-  ADDRESS: 'Address is required.',
-  CITY: 'City is required.',
-  STATE: 'State is required.',
-  ZIPCODE: 'Zip Code is required.',
-  SSN: 'Social Security Number is required.',
-  USERNAME: 'Username is required.',
-  PASSWORD: 'Password is required.',
-  REPEATEDPASSWORD: 'Password confirmation is required.',
+  firstName: 'First name is required.',
+  lastName: 'Last name is required.',
+  address: 'Address is required.',
+  city: 'City is required.',
+  state: 'State is required.',
+  zipCode: 'Zip Code is required.',
+  ssn: 'Social Security Number is required.',
+  username: 'Username is required.',
+  password: 'Password is required.',
+  repeatedPassword: 'Password confirmation is required.',
 };
 
 export const LOGIN_ERRORS = {
-  MISSING_CREDENTIALS: 'Please enter a username and password.',
-  INVALID_CREDENTIALS: 'The username and password could not be verified.',
+  missingCredentials: 'Please enter a username and password.',
+  invalidCredentials: 'The username and password could not be verified.',
 };
 
 export const CUSTOMER_LOOKUP_MESSAGES = {
-  SUCCESS:
+  success:
     'Your login information was located successfully. You are now logged in.',
-  ERROR: 'The customer information provided could not be found.',
+  error: 'The customer information provided could not be found.',
 };

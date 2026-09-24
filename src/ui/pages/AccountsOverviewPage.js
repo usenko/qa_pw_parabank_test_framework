@@ -124,4 +124,13 @@ export class AccountsOverviewPage extends BasePage {
       await expect(headerCell).toBeVisible();
     });
   }
+
+  async assertValuesAreEqual(actualBalance, expectedBalance) {
+    await this.step(
+      `Assert balance for the account equals to ${expectedBalance}`,
+      async () => {
+        expect(actualBalance).toBe(expectedBalance);
+      },
+    );
+  }
 }
