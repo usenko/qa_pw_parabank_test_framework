@@ -1,11 +1,11 @@
 import { test as base } from '@playwright/test';
 import { AccountsOverviewPage } from '../../src/ui/pages/AccountsOverviewPage';
-import { TransferFoundsPage } from '../../src/ui/pages/TransferFoundsPage';
+import { TransferFundsPage } from '../../src/ui/pages/TransferFundsPage';
 import { OpenNewAccountPage } from '../../src/ui/pages/OpenNewAccountPage';
 
 export const test = base.extend<{
   accountsOverviewPage: AccountsOverviewPage;
-  transferFoundsPage: TransferFoundsPage;
+  transferFundsPage: TransferFundsPage;
   openNewAccountPage: OpenNewAccountPage;
 }>({
   accountsOverviewPage: async ({ page }, use) => {
@@ -14,10 +14,10 @@ export const test = base.extend<{
     await use(accountsOverviewPage);
   },
 
-  transferFoundsPage: async ({ page }, use) => {
-    const transferFoundsPage = new TransferFoundsPage(page);
+  transferFundsPage: async ({ page }, use) => {
+    const transferFundsPage = new TransferFundsPage(page);
 
-    await use(transferFoundsPage);
+    await use(transferFundsPage);
   },
 
   openNewAccountPage: async ({ page }, use) => {

@@ -25,13 +25,23 @@ export class BasePage {
     return this.page.getByRole('button', { name: buttonName });
   }
 
-  inputTextLocator(inputName) {
+  inputTextLocatorByName(inputName) {
     return this.page.locator(`input[name="${inputName}"]`);
+  }
+
+  inputTextLocatorById(id) {
+    return this.page.locator(`input[id="${id}"]`);
   }
 
   async fillInputFieldByName(inputName, value) {
     await this.step(`Fill the ${inputName} field`, async () => {
-      await this.inputTextLocator(inputName).fill(value);
+      await this.inputTextLocatorByName(inputName).fill(value);
+    });
+  }
+
+  async fillInputFieldById(id, value) {
+    await this.step(`Fill the ${id} field`, async () => {
+      await this.inputTextLocatorById(id).fill(value);
     });
   }
 

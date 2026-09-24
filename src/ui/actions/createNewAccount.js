@@ -1,6 +1,6 @@
-import { testStep } from '../../../common/helpers/pwHelpers';
+import { testStep } from '../../common/helpers/pwHelpers';
 import { OpenNewAccountPage } from '../pages/OpenNewAccountPage';
-import { AccountsOverviewPage } from '../pages/ApenNewAccountPage';
+import { AccountsOverviewPage } from '../pages/AccountsOverviewPage';
 import { AccountNavMenu } from '../components/AccountNavMenu';
 
 export async function createNewAccount(page, accountType) {

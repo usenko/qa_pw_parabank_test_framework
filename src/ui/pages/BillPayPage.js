@@ -13,16 +13,6 @@ export class BillPayPage extends BasePage {
     });
   }
 
-  inputTextLocator(inputName) {
-    return this.loginPanel.locator(`input[name="${inputName.toLowerCase()}"]`);
-  }
-
-  async fillInputFieldByName(inputName, value) {
-    await this.step(`Fill the ${inputName} field`, async () => {
-      await this.inputTextLocator(inputName).fill(value);
-    });
-  }
-
   async clickLoginButton({ isSuccess = true } = {}) {
     await this.step(`Click the 'Log in' button`, async () => {
       if (isSuccess) {

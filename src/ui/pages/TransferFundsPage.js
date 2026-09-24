@@ -1,6 +1,6 @@
 import { BasePage } from './BasePage';
 
-export class TransferFoundsPage extends BasePage {
+export class TransferFundsPage extends BasePage {
   constructor(page, userId = 0) {
     super(page);
     this.page = page;
