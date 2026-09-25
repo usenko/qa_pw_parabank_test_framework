@@ -11,9 +11,9 @@ test.describe('Bill Payment Service — Positive Flows', () => {
     accountsOverviewPage,
     accountNavMenu,
     accountActivityPage,
-    page,
   }) => {
     const billPaymentData = generateBillPaymentData();
+
     await billPayPage.open('parabank/billpay.htm');
     await billPayPage.assertMainTextTitle('Bill Payment Service');
     await billPayPage.submitBillPaymentForm(billPaymentData);
@@ -25,8 +25,15 @@ test.describe('Bill Payment Service — Positive Flows', () => {
     await accountNavMenu.clickNavLink('Accounts Overview');
     const accountId = await accountsOverviewPage.getAccountIdByLink();
     await accountsOverviewPage.clickAccountLink(accountId);
-    const transactions = await accountActivityPage.getTransactionDataByRow(1);
-    await await page.pause();
+    await accountActivityPage.assertTransactionByType(
+      1,
+      'debit',
+      billPaymentData.amount,
+    );
+    await accountActivityPage.assertTransactionByType(
+      1,
+      'transaction',
+      `Bill Payment to ${billPaymentData.payeeName}`,
+    );
   });
-  //should display error messages when submitting an empty form
 });

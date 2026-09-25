@@ -17,13 +17,23 @@ export class AccountActivityPage extends BasePage {
       async () => {
         const row = this.activityTableLocator.getByRole('row').nth(rowNumber);
         const cells = await row.getByRole('cell').allTextContents();
-        console.log(cells);
         return {
           date: cells[0] || '',
           transaction: cells[1] || '',
           debit: await parseAndFormatNumber(cells[2]),
           credit: await parseAndFormatNumber(cells[3]),
         };
+      },
+    );
+  }
+
+  async assertTransactionByType(rowNumber, fieldType, expectedValue) {
+    await this.step(
+      `Assert that transaction '${fieldType}' in row ${rowNumber} is equal to '${expectedValue}'`,
+      async () => {
+        const transactionData = await this.getTransactionDataByRow(rowNumber);
+        const typeDataValue = transactionData[fieldType];
+        expect(typeDataValue.toString()).toEqual(expectedValue);
       },
     );
   }

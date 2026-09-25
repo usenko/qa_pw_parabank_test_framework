@@ -10,23 +10,27 @@ export class BillPayPage extends BasePage {
     this.sendPaymentButton = this.getButtonByName('Send Payment');
   }
 
-  async clickSendPaymentButton() {
+  async clickSendPaymentButton({ isSuccess = true } = {}) {
     await this.step(`Click the 'Send Payment' button`, async () => {
-      await Promise.all([
-        this.page.waitForResponse(response => {
-          return (
-            response.url().includes('/bank/billpay') &&
-            response.request().method() === 'POST' &&
-            response.status() === 200
-          );
-        }),
-        this.sendPaymentButton.click(),
-      ]);
-      await this.page.waitForURL('**/billpay.htm');
+      if (isSuccess) {
+        await Promise.all([
+          this.page.waitForResponse(response => {
+            return (
+              response.url().includes('/bank/billpay') &&
+              response.request().method() === 'POST' &&
+              response.status() === 200
+            );
+          }),
+          this.sendPaymentButton.click(),
+        ]);
+        await this.page.waitForURL('**/billpay.htm');
+      } else {
+        await this.sendPaymentButton.click();
+      }
     });
   }
 
-  async submitBillPaymentForm(account) {
+  async submitBillPaymentForm(account, { isSuccess = true } = {}) {
     await this.step(`Fill the 'Bill Payment' form`, async () => {
       for (const [key, value] of Object.entries(account)) {
         if (BILL_PAYMENT_FIELDS[key] && value !== undefined) {
@@ -38,7 +42,7 @@ export class BillPayPage extends BasePage {
           await this.fillInputFieldByName(verifyFieldName, value);
         }
       }
-      await this.clickSendPaymentButton();
+      await this.clickSendPaymentButton({ isSuccess });
     });
   }
 
