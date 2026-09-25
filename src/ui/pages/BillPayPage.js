@@ -33,8 +33,23 @@ export class BillPayPage extends BasePage {
           const fieldName = BILL_PAYMENT_FIELDS[key];
           await this.fillInputFieldByName(fieldName, value);
         }
+        if (key === 'accountNumber' && BILL_PAYMENT_FIELDS['verifyAccount']) {
+          const verifyFieldName = BILL_PAYMENT_FIELDS['verifyAccount'];
+          await this.fillInputFieldByName(verifyFieldName, value);
+        }
       }
       await this.clickSendPaymentButton();
     });
+  }
+
+  async assertSuccessPaymentMessageIsShown(name, amount) {
+    await this.step(
+      `Assert payment to ${name} for $${amount} is successful`,
+      async () => {
+        await this.assertMainTextTitle('Bill Payment Complete');
+        await expect(this.page.getByText(name)).toBeVisible();
+        await expect(this.page.getByText(`$${amount}`)).toBeVisible();
+      },
+    );
   }
 }
