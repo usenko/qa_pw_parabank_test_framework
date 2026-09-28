@@ -6,11 +6,25 @@ export class FindTransactionsPage extends BasePage {
     super(page);
     this.page = page;
     this.userId = userId;
-    this.sendPaymentButton = this.getButtonByName('Send Payment');
+    this.sendPaymentButton = this.getButtonByName('Find Transactions');
+    this.accountIdSelector = this.page.locator('#accountId');
+    this.transactionIdField = this.inputTextLocatorById('transactionId');
+  }
+
+  async selectAccountId(accountId) {
+    await this.step(`Select ${accountId} account id`, async () => {
+      await this.selectOptionByLabel(this.accountIdSelector, accountId);
+    });
+  }
+
+  async fillTransactionIdField(transactionId) {
+    await this.step(`Fill Transaction id field`, async () => {
+      await this.transactionIdField.fill(transactionId);
+    });
   }
 
   async clickSendPaymentButton({ isSuccess = true } = {}) {
-    await this.step(`Click the 'Send Payment' button`, async () => {
+    await this.step(`Click the 'Find Transactions' button`, async () => {
       if (isSuccess) {
         await Promise.all([
           this.page.waitForResponse(response => {
@@ -26,22 +40,6 @@ export class FindTransactionsPage extends BasePage {
       } else {
         await this.sendPaymentButton.click();
       }
-    });
-  }
-
-  async submitBillPaymentForm(account, { isSuccess = true } = {}) {
-    await this.step(`Fill the 'Bill Payment' form`, async () => {
-      for (const [key, value] of Object.entries(account)) {
-        if (BILL_PAYMENT_FIELDS[key] && value !== undefined) {
-          const fieldName = BILL_PAYMENT_FIELDS[key];
-          await this.fillInputFieldByName(fieldName, value);
-        }
-        if (key === 'accountNumber' && BILL_PAYMENT_FIELDS['verifyAccount']) {
-          const verifyFieldName = BILL_PAYMENT_FIELDS['verifyAccount'];
-          await this.fillInputFieldByName(verifyFieldName, value);
-        }
-      }
-      await this.clickSendPaymentButton({ isSuccess });
     });
   }
 

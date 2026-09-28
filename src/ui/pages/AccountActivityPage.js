@@ -8,14 +8,14 @@ export class AccountActivityPage extends BasePage {
     this.page = page;
     this.userId = userId;
     this.detailsTable = this.page.locator('#accountDetails').getByRole('table');
-    this.activityTableLocator = this.page.locator('#transactionTable');
+    this.detailsTableLocator = this.page.locator('#transactionTable');
   }
 
-  async getTransactionDataByRow(rowNumber) {
+  async getTransactionDataByRow(rowIndex) {
     return await this.step(
-      `Get transaction data from Account Activity table (row: ${rowNumber})`,
+      `Get transaction data from Account Activity table (row: ${rowIndex})`,
       async () => {
-        const row = this.activityTableLocator.getByRole('row').nth(rowNumber);
+        const row = this.detailsTableLocator.getByRole('row').nth(rowIndex);
         const cells = await row.getByRole('cell').allTextContents();
         return {
           date: cells[0] || '',
@@ -23,6 +23,20 @@ export class AccountActivityPage extends BasePage {
           debit: await parseAndFormatNumber(cells[2]),
           credit: await parseAndFormatNumber(cells[3]),
         };
+      },
+    );
+  }
+
+  async clickTransactionLink(rowIndex, cellIndex = 1) {
+    await this.step(
+      `Click on transaction link for ${rowIndex} transaction`,
+      async () => {
+        await this.detailsTableLocator
+          .getByRole('row')
+          .nth(rowIndex)
+          .getByRole('cell')
+          .nth(cellIndex)
+          .click();
       },
     );
   }

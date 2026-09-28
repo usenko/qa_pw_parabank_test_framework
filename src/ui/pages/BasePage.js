@@ -25,6 +25,18 @@ export class BasePage {
     return this.page.getByRole('button', { name: buttonName });
   }
 
+  getCellByName(cellname) {
+    return this.page.getByRole('cell', { name: cellname });
+  }
+
+  getTableRowValueLocator(propertyName, cellIndex = 1) {
+    return this.page
+      .getByRole('row')
+      .filter({ hasText: propertyName })
+      .getByRole('cell')
+      .nth(cellIndex);
+  }
+
   inputTextLocatorByName(inputName) {
     return this.page.locator(`input[name="${inputName}"]`);
   }
@@ -36,6 +48,14 @@ export class BasePage {
   async fillInputFieldByName(inputName, value) {
     await this.step(`Fill the ${inputName} field`, async () => {
       await this.inputTextLocatorByName(inputName).fill(value);
+    });
+  }
+
+  async selectOptionByLabel(selector, label) {
+    await this.step(`Select option ${label} in dropdown menu`, async () => {
+      const element =
+        typeof selector === 'string' ? this.page.locator(selector) : selector;
+      await element.selectOption({ label: label });
     });
   }
 

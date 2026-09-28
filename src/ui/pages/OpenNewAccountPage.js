@@ -13,7 +13,7 @@ export class OpenNewAccountPage extends BasePage {
 
   async selectAccountType(accountType) {
     await this.step(`Select ${accountType} account type`, async () => {
-      await this.accountTypeSelect.selectOption({ label: accountType });
+      await this.selectOptionByLabel(this.accountTypeSelect, accountType);
     });
   }
 

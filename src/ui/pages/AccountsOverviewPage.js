@@ -10,10 +10,6 @@ export class AccountsOverviewPage extends BasePage {
     this.detailsTable = this.page.locator('#accountDetails').getByRole('table');
   }
 
-  getAccountCellByName(cellname) {
-    return this.page.getByRole('cell', { name: cellname });
-  }
-
   getAccountCellByIndex(index = 0) {
     return this.page.getByRole('cell').nth(index);
   }
@@ -120,7 +116,7 @@ export class AccountsOverviewPage extends BasePage {
       const headerCell = this.page
         .getByRole('row')
         .nth(0)
-        .locator(this.getAccountCellByName(cellname));
+        .locator(this.getCellByName(cellname));
       await expect(headerCell).toBeVisible();
     });
   }

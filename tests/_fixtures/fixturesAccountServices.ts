@@ -5,6 +5,7 @@ import { OpenNewAccountPage } from '../../src/ui/pages/OpenNewAccountPage';
 import { BillPayPage } from '../../src/ui/pages/BillPayPage';
 import { AccountActivityPage } from '../../src/ui/pages/AccountActivityPage';
 import { FindTransactionsPage } from '../../src/ui/pages/FindTransactionsPage';
+import { TransactionDetailsPage } from '../../src/ui/pages/TransactionDetailsPage';
 
 export const test = base.extend<{
   accountsOverviewPage: AccountsOverviewPage;
@@ -13,6 +14,7 @@ export const test = base.extend<{
   billPayPage: BillPayPage;
   accountActivityPage: AccountActivityPage;
   findTransactionsPage: FindTransactionsPage;
+  transactionDetailsPage: TransactionDetailsPage;
 }>({
   accountsOverviewPage: async ({ page }, use) => {
     const accountsOverviewPage = new AccountsOverviewPage(page);
@@ -48,5 +50,10 @@ export const test = base.extend<{
     const findTransactionsPage = new FindTransactionsPage(page);
 
     await use(findTransactionsPage);
+  },
+
+  transactionDetailsPage: async ({ page }, use) => {
+    const transactionDetailsPage = new TransactionDetailsPage(page);
+    await use(transactionDetailsPage);
   },
 });
