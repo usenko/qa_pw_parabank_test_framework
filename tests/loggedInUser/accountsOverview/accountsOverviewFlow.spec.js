@@ -1,6 +1,6 @@
 import { test } from '../../_fixtures/fixtures';
 import { signUpAccount } from '../../../src/ui/actions/signUpAccount';
-import { getCurrentMonth } from '../../../src/common/helpers/calendarHelper';
+import { getCurrentMonth } from '../../../src/common/helpers/calendarHelpers';
 
 const moneyToSend = 222;
 test.beforeEach(async ({ page, account }) => {

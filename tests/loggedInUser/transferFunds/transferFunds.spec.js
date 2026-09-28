@@ -25,6 +25,8 @@ testParameters.forEach(({ accountType }) => {
       accountsOverviewPage,
     }, testInfo) => {
       const newAccountId = testInfo.newAccountId;
+      const TRANSFER_SUM = 222;
+
       await accountsOverviewPage.open('/parabank/overview.htm');
       await accountsOverviewPage.assertMainTextTitle('Accounts Overview');
       const initialBalance =
@@ -33,7 +35,7 @@ testParameters.forEach(({ accountType }) => {
           'Balance',
         );
       await accountNavMenu.clickNavLink('Transfer funds');
-      await transferFundsPage.fillAmountField(222);
+      await transferFundsPage.fillAmountField(TRANSFER_SUM);
       await transferFundsPage.selectToAccountId(newAccountId);
       await transferFundsPage.clickTransferButton();
       await transferFundsPage.assertMainTextTitle('Transfer Complete!');
@@ -45,7 +47,7 @@ testParameters.forEach(({ accountType }) => {
           newAccountId,
           'Balance',
         );
-      const totalBalance = initialBalance + 222;
+      const totalBalance = initialBalance + TRANSFER_SUM;
       await accountsOverviewPage.assertValuesAreEqual(
         currentBalance,
         totalBalance,

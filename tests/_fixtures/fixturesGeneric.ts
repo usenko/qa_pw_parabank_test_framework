@@ -14,6 +14,7 @@ export const test = base.extend<
   },
   {
     logger: Logger;
+    workerAccount: any;
   }
 >({
   logger: [
@@ -21,6 +22,14 @@ export const test = base.extend<
       const logger = new Logger('error');
 
       await use(logger);
+    },
+    { scope: 'worker' },
+  ],
+
+  workerAccount: [
+    async ({ logger }, use) => {
+      const data = generateNewAccountUserData(logger);
+      await use(data);
     },
     { scope: 'worker' },
   ],
@@ -54,7 +63,12 @@ export const test = base.extend<
   addAllureTestHierarchy: [
     async ({ logger }, use, testInfo) => {
       const fileName = testInfo.file;
-
+      const hasSeverity = testInfo.annotations.some(
+        annotation => annotation.type === 'severity',
+      );
+      if (!hasSeverity) {
+        testInfo.annotations.push({ type: 'severity', description: 'normal' });
+      }
       const [parentSuite, suite, subSuite] = parseTestTreeHierarchy(
         fileName,
         logger,
