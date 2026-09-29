@@ -9,10 +9,11 @@ import { AccountsOverviewPage } from '../../../src/ui/pages/AccountsOverviewPage
 import { AccountActivityPage } from '../../../src/ui/pages/AccountActivityPage';
 import { TransactionDetailsPage } from '../../../src/ui/pages/TransactionDetailsPage';
 
-let sharedAccountId;
+let newAccountId;
 let page;
 let transactionId;
 let transactionDate;
+let transactionDateTomorrow;
 const TRANSFER_SUM = 222;
 
 test.describe(`Find Transactions flow`, () => {
@@ -23,7 +24,7 @@ test.describe(`Find Transactions flow`, () => {
     await signUpAccount(page, workerAccount);
 
     const accountId = await createNewAccount(page, 'SAVINGS');
-    sharedAccountId = accountId;
+    newAccountId = accountId;
 
     await transferFund(page, accountId, TRANSFER_SUM);
 
@@ -32,6 +33,7 @@ test.describe(`Find Transactions flow`, () => {
     const transactionDetailsPage = new TransactionDetailsPage(page);
 
     transactionDate = getFormattedDate('MM-DD-YYYY', 0);
+    transactionDateTomorrow = getFormattedDate('MM-DD-YYYY', 1);
 
     await accountsOverviewPage.open('/parabank/overview.htm');
     await accountsOverviewPage.clickAccountLink(accountId);
@@ -53,7 +55,7 @@ test.describe(`Find Transactions flow`, () => {
 
   test(`Should able to find transactions by Id`, async () => {
     await findTransactionsPage.open('/parabank/findtrans.htm');
-    await findTransactionsPage.selectAccountId(sharedAccountId);
+    await findTransactionsPage.selectAccountId(newAccountId);
     await findTransactionsPage.fillTransactionIdField(transactionId);
     await findTransactionsPage.clickFindTransactionButton();
     await findTransactionsPage.assertMainTextTitle('Transaction Results');
@@ -75,25 +77,52 @@ test.describe(`Find Transactions flow`, () => {
     );
   });
 
-  test(`Should able to find transactions by date`, async () => {
+  test(`Should able to find transactions by Date`, async () => {
     await findTransactionsPage.open('/parabank/findtrans.htm');
-    await findTransactionsPage.selectAccountId(sharedAccountId);
-    await findTransactionsPage.fillTransactionIdField(transactionId);
-    await findTransactionsPage.clickFindTransactionButton();
+    await findTransactionsPage.selectAccountId(newAccountId);
+    await findTransactionsPage.fillTransactionDateField(transactionDate);
+    await findTransactionsPage.clickFindTransactionButton(1);
     await findTransactionsPage.assertMainTextTitle('Transaction Results');
-    await findTransactionsPage.assertTransactionByType(1, 'debit', '0');
+    await findTransactionsPage.assertTransactionByType(2, 'debit', '0');
     await findTransactionsPage.assertTransactionByType(
-      1,
+      2,
       'transaction',
       'Funds Transfer Received',
     );
     await findTransactionsPage.assertTransactionByType(
-      1,
+      2,
       'date',
       transactionDate,
     );
     await findTransactionsPage.assertTransactionByType(
-      1,
+      2,
+      'credit',
+      `${TRANSFER_SUM}`,
+    );
+  });
+
+  test(`Should able to find transactions by Date Range`, async () => {
+    await findTransactionsPage.open('/parabank/findtrans.htm');
+    await findTransactionsPage.selectAccountId(newAccountId);
+    await findTransactionsPage.fillTransactionDateFromField(transactionDate);
+    await findTransactionsPage.fillTransactionDateToField(
+      transactionDateTomorrow,
+    );
+    await findTransactionsPage.clickFindTransactionButton(2);
+    await findTransactionsPage.assertMainTextTitle('Transaction Results');
+    await findTransactionsPage.assertTransactionByType(2, 'debit', '0');
+    await findTransactionsPage.assertTransactionByType(
+      2,
+      'transaction',
+      'Funds Transfer Received',
+    );
+    await findTransactionsPage.assertTransactionByType(
+      2,
+      'date',
+      transactionDate,
+    );
+    await findTransactionsPage.assertTransactionByType(
+      2,
       'credit',
       `${TRANSFER_SUM}`,
     );

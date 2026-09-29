@@ -9,6 +9,9 @@ export class FindTransactionsPage extends BasePage {
     this.findTransactionButton = this.getButtonByName('Find Transactions');
     this.accountIdSelector = this.page.locator('#accountId');
     this.transactionIdField = this.inputTextLocatorById('transactionId');
+    this.transactionDateField = this.inputTextLocatorById('transactionDate');
+    this.transactionDateFromField = this.inputTextLocatorById('fromDate');
+    this.transactionDateToField = this.inputTextLocatorById('toDate');
     this.transactionTableLocator = this.page.locator('#transactionTable');
   }
 
@@ -19,8 +22,24 @@ export class FindTransactionsPage extends BasePage {
   }
 
   async fillTransactionIdField(transactionId) {
-    await this.step(`Fill Transaction id field`, async () => {
+    await this.step(`Fill Transaction Id field`, async () => {
       await this.transactionIdField.fill(transactionId);
+    });
+  }
+
+  async fillTransactionDateField(date) {
+    await this.step(`Fill Transaction Date field`, async () => {
+      await this.transactionDateField.fill(date);
+    });
+  }
+  async fillTransactionDateFromField(date) {
+    await this.step(`Fill Transaction Date from field`, async () => {
+      await this.transactionDateFromField.fill(date);
+    });
+  }
+  async fillTransactionDateToField(date) {
+    await this.step(`Fill Transaction Date to field`, async () => {
+      await this.transactionDateToField.fill(date);
     });
   }
 
@@ -29,7 +48,7 @@ export class FindTransactionsPage extends BasePage {
       await Promise.all([
         this.page.waitForResponse(response => {
           return (
-            response.url().includes('/bank/transactions/') &&
+            response.url().includes('/transactions/') &&
             response.request().method() === 'GET' &&
             response.status() === 200
           );
