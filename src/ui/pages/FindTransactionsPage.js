@@ -6,9 +6,10 @@ export class FindTransactionsPage extends BasePage {
     super(page);
     this.page = page;
     this.userId = userId;
-    this.sendPaymentButton = this.getButtonByName('Find Transactions');
+    this.findTransactionButton = this.getButtonByName('Find Transactions');
     this.accountIdSelector = this.page.locator('#accountId');
     this.transactionIdField = this.inputTextLocatorById('transactionId');
+    this.transactionTableLocator = this.page.locator('#transactionTable');
   }
 
   async selectAccountId(accountId) {
@@ -23,34 +24,19 @@ export class FindTransactionsPage extends BasePage {
     });
   }
 
-  async clickSendPaymentButton({ isSuccess = true } = {}) {
+  async clickFindTransactionButton(index = 0) {
     await this.step(`Click the 'Find Transactions' button`, async () => {
-      if (isSuccess) {
-        await Promise.all([
-          this.page.waitForResponse(response => {
-            return (
-              response.url().includes('/bank/billpay') &&
-              response.request().method() === 'POST' &&
-              response.status() === 200
-            );
-          }),
-          this.sendPaymentButton.click(),
-        ]);
-        await this.page.waitForURL('**/billpay.htm');
-      } else {
-        await this.sendPaymentButton.click();
-      }
+      await Promise.all([
+        this.page.waitForResponse(response => {
+          return (
+            response.url().includes('/bank/transactions/') &&
+            response.request().method() === 'GET' &&
+            response.status() === 200
+          );
+        }),
+        this.findTransactionButton.nth(index).click(),
+      ]);
+      await this.page.waitForURL('**/findtrans.htm');
     });
-  }
-
-  async assertSuccessPaymentMessageIsShown(name, amount) {
-    await this.step(
-      `Assert payment to ${name} for $${amount} is successful`,
-      async () => {
-        await this.assertMainTextTitle('Bill Payment Complete');
-        await expect(this.page.getByText(name)).toBeVisible();
-        await expect(this.page.getByText(`$${amount}`)).toBeVisible();
-      },
-    );
   }
 }

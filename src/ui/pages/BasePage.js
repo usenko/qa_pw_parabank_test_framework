@@ -1,4 +1,5 @@
 import { expect, testStep } from '../../common/helpers/pwHelpers';
+import { parseAndFormatNumber } from '../../common/helpers/stringHelpers';
 
 export class BasePage {
   constructor(page, userId = 0) {
@@ -45,6 +46,22 @@ export class BasePage {
     return this.page.locator(`input[id="${id}"]`);
   }
 
+  async getTransactionDataByRow(rowIndex) {
+    return await this.step(
+      `Get transaction data from table (row: ${rowIndex})`,
+      async () => {
+        const row = this.transactionTableLocator.getByRole('row').nth(rowIndex);
+        const cells = await row.getByRole('cell').allTextContents();
+        return {
+          date: cells[0] || '',
+          transaction: cells[1] || '',
+          debit: await parseAndFormatNumber(cells[2]),
+          credit: await parseAndFormatNumber(cells[3]),
+        };
+      },
+    );
+  }
+
   async fillInputFieldByName(inputName, value) {
     await this.step(`Fill the ${inputName} field`, async () => {
       await this.inputTextLocatorByName(inputName).fill(value);
@@ -83,5 +100,16 @@ export class BasePage {
         this.page.getByRole('cell', { name: message }),
       ).toContainText(message);
     });
+  }
+
+  async assertTransactionByType(rowNumber, fieldType, expectedValue) {
+    await this.step(
+      `Assert that transaction '${fieldType}' in row ${rowNumber} is equal to '${expectedValue}'`,
+      async () => {
+        const transactionData = await this.getTransactionDataByRow(rowNumber);
+        const typeDataValue = transactionData[fieldType];
+        expect(typeDataValue.toString()).toEqual(expectedValue);
+      },
+    );
   }
 }

@@ -3,7 +3,6 @@ import { signUpAccount } from '../../../src/ui/actions/signUpAccount';
 import { createNewAccount } from '../../../src/ui/actions/createNewAccount';
 import { transferFund } from '../../../src/ui/actions/transferFund';
 import { getFormattedDate } from '../../../src/common/helpers/calendarHelpers';
-import { generateNewAccountUserData } from '../../../src/common/testData/generateNewAccountUserData';
 import { AccountNavMenu } from '../../../src/ui/components/AccountNavMenu';
 import { FindTransactionsPage } from '../../../src/ui/pages/FindTransactionsPage';
 import { AccountsOverviewPage } from '../../../src/ui/pages/AccountsOverviewPage';
@@ -13,6 +12,8 @@ import { TransactionDetailsPage } from '../../../src/ui/pages/TransactionDetails
 let sharedAccountId;
 let page;
 let transactionId;
+let transactionDate;
+const TRANSFER_SUM = 222;
 
 test.describe(`Find Transactions flow`, () => {
   test.beforeAll(async ({ browser, workerAccount }) => {
@@ -21,7 +22,6 @@ test.describe(`Find Transactions flow`, () => {
 
     await signUpAccount(page, workerAccount);
 
-    const TRANSFER_SUM = 222;
     const accountId = await createNewAccount(page, 'SAVINGS');
     sharedAccountId = accountId;
 
@@ -31,9 +31,10 @@ test.describe(`Find Transactions flow`, () => {
     const accountActivityPage = new AccountActivityPage(page);
     const transactionDetailsPage = new TransactionDetailsPage(page);
 
+    transactionDate = getFormattedDate('MM-DD-YYYY', 0);
+
     await accountsOverviewPage.open('/parabank/overview.htm');
     await accountsOverviewPage.clickAccountLink(accountId);
-    const transactioData = await accountActivityPage.getTransactionDataByRow(2);
     await accountActivityPage.clickTransactionLink(2);
     await transactionDetailsPage.assertMainTextTitle('Transaction Details');
     transactionId = await transactionDetailsPage.getTransactionId();
@@ -43,32 +44,58 @@ test.describe(`Find Transactions flow`, () => {
     if (page) await page.close();
   });
 
-  let navMenu,
-    accountsOverviewPage,
-    findTransactionsPage,
-    transactionDetailsPage;
+  let navMenu, accountsOverviewPage, findTransactionsPage;
 
   test.beforeEach(async () => {
-    navMenu = new AccountNavMenu(page);
     accountsOverviewPage = new AccountsOverviewPage(page);
     findTransactionsPage = new FindTransactionsPage(page);
-    transactionDetailsPage = new TransactionDetailsPage(page);
   });
 
   test(`Should able to find transactions by Id`, async () => {
     await findTransactionsPage.open('/parabank/findtrans.htm');
     await findTransactionsPage.selectAccountId(sharedAccountId);
     await findTransactionsPage.fillTransactionIdField(transactionId);
-
-    console.log('Поток тестов использует ID аккаунта:', sharedAccountId);
-    await page.pause(); // Дебажим именно page
+    await findTransactionsPage.clickFindTransactionButton();
+    await findTransactionsPage.assertMainTextTitle('Transaction Results');
+    await findTransactionsPage.assertTransactionByType(1, 'debit', '0');
+    await findTransactionsPage.assertTransactionByType(
+      1,
+      'transaction',
+      'Funds Transfer Received',
+    );
+    await findTransactionsPage.assertTransactionByType(
+      1,
+      'date',
+      transactionDate,
+    );
+    await findTransactionsPage.assertTransactionByType(
+      1,
+      'credit',
+      `${TRANSFER_SUM}`,
+    );
   });
 
-  test(`Should able to find transactions by Id11`, async () => {
-    // Страница осталась авторизованной
-    await findTransactionsPage.open('/parabank/overview.htm');
-
-    console.log('Тест 2 успешно видит личный кабинет без повторного логина!');
-    await page.pause();
+  test(`Should able to find transactions by date`, async () => {
+    await findTransactionsPage.open('/parabank/findtrans.htm');
+    await findTransactionsPage.selectAccountId(sharedAccountId);
+    await findTransactionsPage.fillTransactionIdField(transactionId);
+    await findTransactionsPage.clickFindTransactionButton();
+    await findTransactionsPage.assertMainTextTitle('Transaction Results');
+    await findTransactionsPage.assertTransactionByType(1, 'debit', '0');
+    await findTransactionsPage.assertTransactionByType(
+      1,
+      'transaction',
+      'Funds Transfer Received',
+    );
+    await findTransactionsPage.assertTransactionByType(
+      1,
+      'date',
+      transactionDate,
+    );
+    await findTransactionsPage.assertTransactionByType(
+      1,
+      'credit',
+      `${TRANSFER_SUM}`,
+    );
   });
 });

@@ -78,7 +78,6 @@ test.describe('Accounts Overview Flow', () => {
       accountsOverviewPage,
       accountNavMenu,
       transferFundsPage,
-      page,
     }) => {
       await accountsOverviewPage.open('/parabank/overview.htm');
       const accountId = await accountsOverviewPage.getAccountIdByLink();
@@ -93,7 +92,6 @@ test.describe('Accounts Overview Flow', () => {
       await accountNavMenu.clickNavLink('Transfer Funds');
       await transferFundsPage.assertMainTextTitle('Transfer Funds');
       await transferFundsPage.fillAmountField(moneyToSend);
-      await await page.pause();
     });
   });
 });
