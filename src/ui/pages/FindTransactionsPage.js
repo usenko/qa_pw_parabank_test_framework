@@ -12,6 +12,7 @@ export class FindTransactionsPage extends BasePage {
     this.transactionDateField = this.inputTextLocatorById('transactionDate');
     this.transactionDateFromField = this.inputTextLocatorById('fromDate');
     this.transactionDateToField = this.inputTextLocatorById('toDate');
+    this.transactionAmountField = this.inputTextLocatorById('amount');
     this.transactionTableLocator = this.page.locator('#transactionTable');
   }
 
@@ -32,14 +33,22 @@ export class FindTransactionsPage extends BasePage {
       await this.transactionDateField.fill(date);
     });
   }
+
   async fillTransactionDateFromField(date) {
     await this.step(`Fill Transaction Date from field`, async () => {
       await this.transactionDateFromField.fill(date);
     });
   }
+
   async fillTransactionDateToField(date) {
     await this.step(`Fill Transaction Date to field`, async () => {
       await this.transactionDateToField.fill(date);
+    });
+  }
+
+  async fillTransactionAmountField(amount) {
+    await this.step(`Fill Transaction Amount field`, async () => {
+      await this.transactionAmountField.fill(amount.toString());
     });
   }
 

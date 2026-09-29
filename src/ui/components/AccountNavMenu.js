@@ -20,7 +20,7 @@ export class AccountNavMenu {
   }
 
   async clickLogOut() {
-    await this.step('Click "Log Out" link"', async () => {
+    await this.step('Click "Log Out" link', async () => {
       await Promise.all([
         this.page.waitForResponse(response => {
           return (

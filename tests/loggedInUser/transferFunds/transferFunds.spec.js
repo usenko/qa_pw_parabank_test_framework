@@ -27,7 +27,7 @@ testParameters.forEach(({ accountType }) => {
       const newAccountId = testInfo.newAccountId;
       const TRANSFER_SUM = 222;
 
-      await accountsOverviewPage.open('/parabank/overview.htm');
+      await accountsOverviewPage.open('/overview.htm');
       await accountsOverviewPage.assertMainTextTitle('Accounts Overview');
       const initialBalance =
         await accountsOverviewPage.getCellAccountAmountById(

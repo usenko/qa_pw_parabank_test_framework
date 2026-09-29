@@ -10,7 +10,7 @@ export function getFormattedDate(format = 'DD-MM-YYYY', daysOffset) {
   const date = new Date();
 
   if (daysOffset != 0) {
-    date.setDate(date.setDate() + daysOffset);
+    date.setDate(date.getDate() + daysOffset);
   }
 
   const day = String(date.getDate()).padStart(2, '0');
