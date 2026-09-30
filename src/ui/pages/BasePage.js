@@ -62,9 +62,16 @@ export class BasePage {
     );
   }
 
-  async fillInputFieldByName(inputName, value) {
+  async fillInputFieldByName(inputName, value, { withDelay = false } = {}) {
     await this.step(`Fill the ${inputName} field`, async () => {
-      await this.inputTextLocatorByName(inputName).fill(value);
+      const locator = this.inputTextLocatorByName(inputName);
+
+      if (withDelay) {
+        await locator.clear();
+        await locator.pressSequentially(value, { delay: 10 });
+      } else {
+        await locator.fill(value);
+      }
     });
   }
 

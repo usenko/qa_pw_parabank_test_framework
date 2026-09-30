@@ -16,9 +16,9 @@ test.describe('Update Contact Info Flow', () => {
       accountData;
     await updateContactInfoPage.open('/parabank/updateprofile.htm');
     await updateContactInfoPage.assertMainTextTitle('Update Profile');
-    await updateContactInfoPage.updateContactInfo(contactInfoData);
-    const response = await updateContactInfoPage.clickUpdateProfileButton();
-    const responseBody = await response.text();
-    console.log('JSON бэкенда:', responseBody);
+    const response =
+      await updateContactInfoPage.updateContactInfo(contactInfoData);
+    await updateContactInfoPage.assertMainTextTitle('Profile Updated');
+    await updateContactInfoPage.assertResponseData(response);
   });
 });

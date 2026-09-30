@@ -12,16 +12,16 @@ export class UpdateContactInfoPage extends BasePage {
 
   async clickUpdateProfileButton() {
     return await this.step('Click "Update Profile" button', async () => {
-      //   await this.page.waitForResponse(
-      //     res =>
-      //       res.url().includes('/customers/') && res.request().method() === 'GET',
-      //   );
       const [response] = await Promise.all([
         this.page.waitForResponse(response => {
+          const url = response.url();
+          const method = response.request().method();
+          const status = response.status();
+
           return (
-            response.url().includes('/customers/update') &&
-            response.request().method() === 'POST' &&
-            response.status() === 200
+            url.includes('/customers') &&
+            (method === 'POST' || method === 'GET') &&
+            status === 200
           );
         }),
         this.updateProfileButton.click(),
@@ -33,14 +33,25 @@ export class UpdateContactInfoPage extends BasePage {
   }
 
   async updateContactInfo(account) {
-    await this.step(`Fill the 'Sign up' form`, async () => {
+    return await this.step(`Fill the 'Update Profile' form`, async () => {
       for (const [key, value] of Object.entries(account)) {
         if (SIGN_UP_FIELDS[key] && value !== undefined) {
           const fieldName = SIGN_UP_FIELDS[key];
-          await this.fillInputFieldByName(fieldName, value);
+          await this.fillInputFieldByName(fieldName, value, {
+            withDelay: true,
+          });
         }
       }
-      await this.clickUpdateProfileButton();
+      return await this.clickUpdateProfileButton();
+    });
+  }
+
+  async assertResponseData(response) {
+    await this.step(`Assert response from server`, async () => {
+      expect(response).toBeDefined();
+      const responseBody = await response.text();
+      console.log('Финальный перехваченный ответ:', responseBody);
+      expect(responseBody).toContain('Successfully updated customer profile');
     });
   }
 }
