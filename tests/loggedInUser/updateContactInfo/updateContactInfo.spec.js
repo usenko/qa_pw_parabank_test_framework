@@ -1,5 +1,6 @@
 import { test } from '../../_fixtures/fixtures';
 import { signUpAccount } from '../../../src/ui/actions/signUpAccount';
+import { generateNewAccountUserData } from '../../../src/common/testData/generateNewAccountUserData';
 
 test.beforeEach(async ({ page, account, accountNavMenu }) => {
   await signUpAccount(page, account);
@@ -10,9 +11,12 @@ test.describe('Update Contact Info Flow', () => {
     updateContactInfoPage,
     page,
   }) => {
+    const accountData = generateNewAccountUserData();
+    const { ssn, username, password, repeatedPassword, ...contactInfoData } =
+      accountData;
     await updateContactInfoPage.open('/parabank/updateprofile.htm');
     await updateContactInfoPage.assertMainTextTitle('Update Profile');
-    await page.waitForTimeout(2000);
+    await updateContactInfoPage.updateContactInfo(contactInfoData);
     const response = await updateContactInfoPage.clickUpdateProfileButton();
     const responseBody = await response.text();
     console.log('JSON бэкенда:', responseBody);

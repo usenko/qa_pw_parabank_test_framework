@@ -1,4 +1,5 @@
 import { expect } from '../../common/helpers/pwHelpers';
+import { SIGN_UP_FIELDS } from '../../common/constants';
 import { BasePage } from './BasePage';
 
 export class UpdateContactInfoPage extends BasePage {
@@ -11,6 +12,10 @@ export class UpdateContactInfoPage extends BasePage {
 
   async clickUpdateProfileButton() {
     return await this.step('Click "Update Profile" button', async () => {
+      //   await this.page.waitForResponse(
+      //     res =>
+      //       res.url().includes('/customers/') && res.request().method() === 'GET',
+      //   );
       const [response] = await Promise.all([
         this.page.waitForResponse(response => {
           return (
@@ -27,16 +32,15 @@ export class UpdateContactInfoPage extends BasePage {
     });
   }
 
-  async updateContactInfoAndIntercept(newData) {
-    if (newData.firstName) await this.firstNameInput.fill(newData.firstName);
-    if (newData.lastName) await this.lastNameInput.fill(newData.lastName);
-    if (newData.address) await this.addressInput.fill(newData.address);
-    if (newData.city) await this.cityInput.fill(newData.city);
-    if (newData.state) await this.stateInput.fill(newData.state);
-    if (newData.zipCode) await this.zipCodeInput.fill(newData.zipCode);
-    if (newData.phoneNumber)
-      await this.phoneNumberInput.fill(newData.phoneNumber);
-
-    return await this.clickUpdateProfileButton();
+  async updateContactInfo(account) {
+    await this.step(`Fill the 'Sign up' form`, async () => {
+      for (const [key, value] of Object.entries(account)) {
+        if (SIGN_UP_FIELDS[key] && value !== undefined) {
+          const fieldName = SIGN_UP_FIELDS[key];
+          await this.fillInputFieldByName(fieldName, value);
+        }
+      }
+      await this.clickUpdateProfileButton();
+    });
   }
 }
