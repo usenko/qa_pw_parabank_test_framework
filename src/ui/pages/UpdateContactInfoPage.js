@@ -10,6 +10,23 @@ export class UpdateContactInfoPage extends BasePage {
     this.updateProfileButton = this.getButtonByName('Update Profile');
   }
 
+  async openContactInfoPage() {
+    await this.step(`Navigate to /parabank/updateprofile.htm`, async () => {
+      await Promise.all([
+        this.page
+          .waitForResponse(
+            response =>
+              response.url().includes('/customers/') &&
+              response.status() === 200,
+            { timeout: 1000 },
+          )
+          .catch(() => {}),
+
+        this.page.goto('/parabank/updateprofile.htm'),
+      ]);
+    });
+  }
+
   async clickUpdateProfileButton() {
     return await this.step('Click "Update Profile" button', async () => {
       const [response] = await Promise.all([
@@ -50,8 +67,19 @@ export class UpdateContactInfoPage extends BasePage {
     await this.step(`Assert response from server`, async () => {
       expect(response).toBeDefined();
       const responseBody = await response.text();
-      console.log('Финальный перехваченный ответ:', responseBody);
+
       expect(responseBody).toContain('Successfully updated customer profile');
     });
+  }
+
+  async assertContactValue(inputName, expectedValue) {
+    return await this.step(
+      `Assert ${inputName} value is ${expectedValue}`,
+      async () => {
+        await expect(this.inputTextLocatorByName(inputName)).toHaveValue(
+          expectedValue,
+        );
+      },
+    );
   }
 }
