@@ -35,7 +35,7 @@ test.describe(`Find Transactions flow`, () => {
     transactionDate = getFormattedDate('MM-DD-YYYY', 0);
     transactionDateTomorrow = getFormattedDate('MM-DD-YYYY', 1);
 
-    await accountsOverviewPage.open('/overview.htm');
+    await accountsOverviewPage.open('overview.htm');
     await accountsOverviewPage.clickAccountLink(accountId);
     await accountActivityPage.clickTransactionLink(2);
     await transactionDetailsPage.assertMainTextTitle('Transaction Details');
@@ -51,7 +51,7 @@ test.describe(`Find Transactions flow`, () => {
   });
 
   test(`Should able to find transactions by Id`, async () => {
-    await findTransactionsPage.open('/findtrans.htm');
+    await findTransactionsPage.open('findtrans.htm');
     await findTransactionsPage.selectAccountId(newAccountId);
     await findTransactionsPage.fillTransactionIdField(transactionId);
     await findTransactionsPage.clickFindTransactionButton();
@@ -75,7 +75,7 @@ test.describe(`Find Transactions flow`, () => {
   });
 
   test(`Should able to find transactions by Date`, async () => {
-    await findTransactionsPage.open('/findtrans.htm');
+    await findTransactionsPage.open('findtrans.htm');
     await findTransactionsPage.selectAccountId(newAccountId);
     await findTransactionsPage.fillTransactionDateField(transactionDate);
     await findTransactionsPage.clickFindTransactionButton(1);
@@ -99,7 +99,7 @@ test.describe(`Find Transactions flow`, () => {
   });
 
   test(`Should able to find transactions by Date Range`, async () => {
-    await findTransactionsPage.open('/findtrans.htm');
+    await findTransactionsPage.open('findtrans.htm');
     await findTransactionsPage.selectAccountId(newAccountId);
     await findTransactionsPage.fillTransactionDateFromField(transactionDate);
     await findTransactionsPage.fillTransactionDateToField(
@@ -126,7 +126,7 @@ test.describe(`Find Transactions flow`, () => {
   });
 
   test(`Should able to find transactions by Amount`, async () => {
-    await findTransactionsPage.open('/findtrans.htm');
+    await findTransactionsPage.open('findtrans.htm');
     await findTransactionsPage.selectAccountId(newAccountId);
     await findTransactionsPage.fillTransactionAmountField(TRANSFER_SUM);
     await findTransactionsPage.clickFindTransactionButton(3);

@@ -13,7 +13,7 @@ test.describe('Accounts Overview Flow', () => {
       accountsOverviewPage,
     }) => {
       const headerCellsName = ['Account', 'Balance*', 'Available Amount'];
-      await accountsOverviewPage.open('/overview.htm');
+      await accountsOverviewPage.open('overview.htm');
       await accountsOverviewPage.assertMainTextTitle('Accounts Overview');
       for (const cellName of headerCellsName) {
         await accountsOverviewPage.assertAccountsOverviewHasHeaderCell(
@@ -24,7 +24,7 @@ test.describe('Accounts Overview Flow', () => {
     test(`Accounts overview shows default account id and balances`, async ({
       accountsOverviewPage,
     }) => {
-      await accountsOverviewPage.open('/overview.htm');
+      await accountsOverviewPage.open('overview.htm');
       const accountId = await accountsOverviewPage.getAccountIdByLink();
       const balance = await accountsOverviewPage.getCellAccountAmountById(
         accountId,
@@ -43,7 +43,7 @@ test.describe('Accounts Overview Flow', () => {
     test(`Should match expected values in account details table`, async ({
       accountsOverviewPage,
     }) => {
-      await accountsOverviewPage.open('/overview.htm');
+      await accountsOverviewPage.open('overview.htm');
       const accountId = await accountsOverviewPage.getAccountIdByLink();
       const balance = await accountsOverviewPage.getCellAccountAmountById(
         accountId,
@@ -79,7 +79,7 @@ test.describe('Accounts Overview Flow', () => {
       accountNavMenu,
       transferFundsPage,
     }) => {
-      await accountsOverviewPage.open('/overview.htm');
+      await accountsOverviewPage.open('overview.htm');
       const accountId = await accountsOverviewPage.getAccountIdByLink();
       const balance = await accountsOverviewPage.getCellAccountAmountById(
         accountId,

@@ -5,7 +5,7 @@ export async function transferFund(page, accountID, value) {
   await testStep('Transfer Fund', async () => {
     const transferFundsPage = new TransferFundsPage(page);
 
-    await transferFundsPage.open('/transfer.htm');
+    await transferFundsPage.open('transfer.htm');
     await transferFundsPage.fillAmountField(value);
     await transferFundsPage.selectToAccountId(accountID);
     await transferFundsPage.clickTransferButton();

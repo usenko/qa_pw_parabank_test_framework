@@ -9,7 +9,7 @@ export async function createNewAccount(page, accountType) {
     const accountsOverviewPage = new AccountsOverviewPage(page);
     const accountNavMenu = new AccountNavMenu(page);
 
-    await accountsOverviewPage.open('/overview.htm');
+    await accountsOverviewPage.open('overview.htm');
     const accountId = await accountsOverviewPage.getAccountIdByLink();
 
     await accountNavMenu.clickNavLink('Open New Account');

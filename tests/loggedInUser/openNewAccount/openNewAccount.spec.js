@@ -19,7 +19,7 @@ test.describe('Open New Account Flow', () => {
       openNewAccountPage,
       accountNavMenu,
     }) => {
-      await accountsOverviewPage.open('/overview.htm');
+      await accountsOverviewPage.open('overview.htm');
       const accountId = await accountsOverviewPage.getAccountIdByLink();
       await accountNavMenu.clickNavLink('Open New Account');
       await accountsOverviewPage.assertMainTextTitle('Open New Account');

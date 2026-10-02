@@ -8,10 +8,11 @@ export class RequestLoanPage extends BasePage {
     this.page = page;
     this.userId = userId;
     this.applyNowButton = this.getButtonByName('Apply Now');
+    this.newAccountIdLocator = this.page.locator('#newAccountId');
   }
 
-  async applyNowButton() {
-    return await this.step('Click "Update Profile" button', async () => {
+  async clickApplyNowButton() {
+    return await this.step('Click "Apply Now" button', async () => {
       await Promise.all([
         this.page.waitForResponse(response => {
           const url = response.url();
@@ -28,19 +29,12 @@ export class RequestLoanPage extends BasePage {
     });
   }
 
-  await;
-
-  async applyLoanForm() {
-    return await this.step(`Fill the 'Update Profile' form`, async () => {
-      for (const [key, value] of Object.entries(account)) {
-        if (SIGN_UP_FIELDS[key] && value !== undefined) {
-          const fieldName = SIGN_UP_FIELDS[key];
-          await this.fillInputFieldByName(fieldName, value, {
-            withDelay: true,
-          });
-        }
-      }
-      return await this.clickUpdateProfileButton();
-    });
+  async getAccountId() {
+    return await this.step(
+      'Get new created account Id from Request Loan page',
+      async () => {
+        return await this.newAccountIdLocator.textContent();
+      },
+    );
   }
 }
