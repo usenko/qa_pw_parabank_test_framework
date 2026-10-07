@@ -28,8 +28,22 @@ npm install -g allure-commandline
 
 ## How to run the tests
 
-// TODO - It's part of your task to add the appropriate instructions here. 
+To run tests execute the following command in terminal for project folder:
+```bash
+npm run test
+```
 
 ## How to generate report
 
-// TODO - It's part of your task to add the appropriate instructions here. 
+To generate the report and remove existing folder of created reports use next commands:
+
+1. Generate the reports
+```bash
+npm run allure:serve
+```
+
+2. Remove folder of created reports(for Mac only):
+
+```bash
+npm run allure:clean
+```

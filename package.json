@@ -20,7 +20,11 @@
     "prettier": "^3.4.2"
   },
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "playwright test",
+    "allure:clean": "rm -rf allure-results allure-report",
+    "allure:serve": "allure serve allure-results",
+    "lint": "eslint"
   },
   "husky": {
     "hooks": {

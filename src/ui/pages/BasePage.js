@@ -1,0 +1,137 @@
+import { expect, testStep } from '../../common/helpers/pwHelpers';
+import { parseAndFormatNumber } from '../../common/helpers/stringHelpers';
+
+export class BasePage {
+  constructor(page, userId = 0) {
+    this.page = page;
+    this.userId = userId;
+    this.rightPanel = this.page.locator('#rightPanel');
+  }
+
+  async step(title, stepToRun) {
+    return await testStep(title, stepToRun, this.userId);
+  }
+
+  async open(url = '/') {
+    await this.step(`Navigate to ${url}`, async () => {
+      await this.page.goto(url);
+    });
+  }
+
+  getMainTitle(titleName) {
+    return this.page.getByRole('heading', { name: titleName });
+  }
+
+  getButtonByName(buttonName) {
+    return this.page.getByRole('button', { name: buttonName });
+  }
+
+  getCellByName(cellname) {
+    return this.page.getByRole('cell', { name: cellname });
+  }
+
+  getTableRowValueLocator(propertyName, cellIndex = 1) {
+    return this.page
+      .getByRole('row')
+      .filter({ hasText: propertyName })
+      .getByRole('cell')
+      .nth(cellIndex);
+  }
+
+  inputTextLocatorByName(inputName) {
+    return this.page.locator(`input[name="${inputName}"]`);
+  }
+
+  inputTextLocatorById(id) {
+    return this.page.locator(`input[id="${id}"]`);
+  }
+
+  async getTransactionDataByRow(rowIndex) {
+    return await this.step(
+      `Get transaction data from table (row: ${rowIndex})`,
+      async () => {
+        const row = this.transactionTableLocator.getByRole('row').nth(rowIndex);
+        const cells = await row.getByRole('cell').allTextContents();
+        return {
+          date: cells[0] || '',
+          transaction: cells[1] || '',
+          debit: await parseAndFormatNumber(cells[2]),
+          credit: await parseAndFormatNumber(cells[3]),
+        };
+      },
+    );
+  }
+
+  async fillInputFieldByName(inputName, value, { withDelay = false } = {}) {
+    await this.step(`Fill the ${inputName} field`, async () => {
+      const locator = this.inputTextLocatorByName(inputName);
+
+      if (withDelay) {
+        await locator.clear();
+        await locator.pressSequentially(value, { delay: 10 });
+      } else {
+        await locator.fill(value);
+      }
+    });
+  }
+
+  async selectOptionByLabel(selector, label) {
+    await this.step(`Select option ${label} in dropdown menu`, async () => {
+      const element =
+        typeof selector === 'string' ? this.page.locator(selector) : selector;
+      await element.selectOption({ label: label });
+    });
+  }
+
+  async fillInputFieldById(id, value) {
+    await this.step(`Fill the ${id} field`, async () => {
+      await this.inputTextLocatorById(id).fill(value);
+    });
+  }
+
+  async assertMainTextTitle(titleName) {
+    await this.step(`Assert the main title has ${titleName} text`, async () => {
+      await expect(this.getMainTitle(titleName)).toContainText(titleName);
+    });
+  }
+
+  async assertElementTextIsVisible(text) {
+    await this.step(`Verify text element ${text} is visible`, async () => {
+      await expect(this.rightPanel.getByText(text)).toBeVisible();
+    });
+  }
+
+  async assertValidationMessageIsShown(message) {
+    await this.step(`Assert the error ${message} is shown`, async () => {
+      await expect(
+        this.page.getByRole('cell', { name: message }),
+      ).toContainText(message);
+    });
+  }
+
+  async assertTransactionByType(rowNumber, fieldType, expectedValue) {
+    await this.step(
+      `Assert that transaction '${fieldType}' in row ${rowNumber} is equal to '${expectedValue}'`,
+      async () => {
+        const transactionData = await this.getTransactionDataByRow(rowNumber);
+        const typeDataValue = transactionData[fieldType];
+        expect(typeDataValue.toString()).toEqual(expectedValue);
+      },
+    );
+  }
+
+  async assertTransactionRowData(rowNumber, expectedData) {
+    await this.step(
+      `Assert transaction data for row ${rowNumber}`,
+      async () => {
+        for (const [fieldType, expectedValue] of Object.entries(expectedData)) {
+          await this.assertTransactionByType(
+            rowNumber,
+            fieldType,
+            expectedValue,
+          );
+        }
+      },
+    );
+  }
+}
