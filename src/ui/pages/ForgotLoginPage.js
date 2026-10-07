@@ -35,23 +35,6 @@ export class ForgotLoginPage extends BasePage {
     });
   }
 
-  //   async submitCustomerLookupForm(account) {
-  //   await this.step(`Fill the 'Customer Lookup' form`, async () => {
-  //     const targetFields =
-  // ['firstname', 'lastname', 'address', 'city', 'state', 'zipcode', 'ssn'];
-
-  //     for (const key of targetFields) {
-  //       const value = account[key];
-
-  //       if (value !== undefined && SIGN_UP_FIELDS[key]) {
-  //         const fieldName = SIGN_UP_FIELDS[key];
-  //         await this.fillInputFieldByName(fieldName, value);
-  //       }
-  //     }
-  //     await this.clickFindLoginButton();
-  //   });
-  // }
-
   async assertUsernameRetrieved(username) {
     await this.step(`Assert username ${username} is displayed`, async () => {
       const message = new RegExp(`Username:\\s*${username}`, 'i');

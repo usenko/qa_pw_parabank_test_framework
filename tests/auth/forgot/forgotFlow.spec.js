@@ -37,7 +37,6 @@ test.describe('Forgot credentials Flow', () => {
       `Should successfully retrieve username with valid user data`,
       { annotation: { type: 'severity', description: Severity.CRITICAL } },
       async ({ homePage, forgotLoginPage, account }) => {
-        //Check if account variable is correct
         const payload = { ...account };
         const username = account.username;
 

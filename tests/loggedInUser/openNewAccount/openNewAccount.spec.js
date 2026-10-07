@@ -29,10 +29,10 @@ test.describe('Open New Account Flow', () => {
         await openNewAccountPage.clickOpenNewAccountButton();
         await openNewAccountPage.assertMainTextTitle('Account Opened!');
 
-        const newAccontId =
+        const newAccountId =
           await openNewAccountPage.getCreatedAccountId(accountId);
         await accountNavMenu.clickNavLink('Accounts Overview');
-        await accountsOverviewPage.assertAccountIdIsVisible(newAccontId);
+        await accountsOverviewPage.assertAccountIdIsVisible(newAccountId);
       },
     );
   });

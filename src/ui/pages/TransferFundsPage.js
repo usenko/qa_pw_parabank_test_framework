@@ -7,7 +7,7 @@ export class TransferFundsPage extends BasePage {
     this.userId = userId;
     this.accountFromSelect = this.page.locator('#fromAccountId');
     this.accountToSelect = this.page.locator('#toAccountId');
-    this.ammountField = this.page.locator('#amount');
+    this.amountField = this.page.locator('#amount');
   }
 
   async selectFromAccountId(fromAccountId) {
@@ -17,14 +17,14 @@ export class TransferFundsPage extends BasePage {
   }
 
   async selectToAccountId(toAccountId) {
-    await this.step(`Select account that should recieve money`, async () => {
+    await this.step(`Select account that should receive money`, async () => {
       await this.accountToSelect.selectOption(toAccountId);
     });
   }
 
   async fillAmountField(amount) {
     await this.step(`Fill amount to be transferred`, async () => {
-      await this.ammountField.fill(amount.toString());
+      await this.amountField.fill(amount.toString());
     });
   }
 
