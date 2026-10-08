@@ -28,21 +28,47 @@ npm install -g allure-commandline
 
 ## How to run the tests
 
-To run tests execute the following command in terminal for project folder:
+To run all tests execute the following command in terminal for project folder (headless):
 ```bash
 npm run test
 ```
 
-## How to generate report
+Run a specific suite or file:
+```bash
+npx playwright test tests/auth
+npx playwright test tests/loggedInUser/billPay/billPayPositive.spec.js
+```
 
+Run tests by title (example):
+```bash
+npx playwright test --grep "Sign in"
+```
+
+Run in headed mode or in Playwright UI mode:
+```bash
+npm run test:headed
+npm run test:ui
+```
+
+## How to generate report
+Allure commandline requires Java 8+
+Test results are written to `allure-results` automatically after each run
+(the `allure-playwright` reporter is configured in `playwright.config.js`)
 To generate the report and remove existing folder of created reports use next commands:
 
-1. Generate the reports
+1. Generate and open the report:
 ```bash
 npm run allure:serve
 ```
 
-2. Remove folder of created reports(for Mac only):
+2. Generate a static report into `allure-report` and open it:
+
+```bash
+npm run allure:generate
+npm run allure:open
+```
+
+3. Remove old results and reports before a new run: 
 
 ```bash
 npm run allure:clean

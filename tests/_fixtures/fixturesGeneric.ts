@@ -63,12 +63,15 @@ export const test = base.extend<
   addAllureTestHierarchy: [
     async ({ logger }, use, testInfo) => {
       const fileName = testInfo.file;
+      const testDir = testInfo.project.testDir;
+
       const severityAnnotation = testInfo.annotations.find(
         a => a.type === 'severity',
       );
       const severityValue = severityAnnotation?.description || 'normal';
       await allure.severity(severityValue);
       const [parentSuite, suite, subSuite] = parseTestTreeHierarchy(
+        testDir,
         fileName,
         logger,
       );

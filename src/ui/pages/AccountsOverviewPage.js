@@ -73,7 +73,7 @@ export class AccountsOverviewPage extends BasePage {
     const rowCount = await rows.count();
     const accountData = {};
 
-    for (let i = 0; i <= rowCount; i++) {
+    for (let i = 0; i < rowCount; i++) {
       const currentRow = rows.nth(i);
       const cells = currentRow.getByRole('cell');
 
