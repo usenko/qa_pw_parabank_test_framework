@@ -3,9 +3,7 @@ import { BasePage } from './BasePage';
 
 export class OpenNewAccountPage extends BasePage {
   constructor(page, userId = 0) {
-    super(page);
-    this.page = page;
-    this.userId = userId;
+    super(page, userId);
     this.accountTypeSelect = this.page.locator('#type');
     this.accountFromSelect = this.page.locator('#fromAccountId');
     this.newAccountId = this.page.locator('#newAccountId');

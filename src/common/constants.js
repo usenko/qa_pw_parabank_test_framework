@@ -45,3 +45,5 @@ export const BILL_PAYMENT_ERRORS = {
   verifyAccount: 'Account number is required.',
   amount: 'The amount cannot be empty.',
 };
+
+export const TRANSFER_SUM = 222;

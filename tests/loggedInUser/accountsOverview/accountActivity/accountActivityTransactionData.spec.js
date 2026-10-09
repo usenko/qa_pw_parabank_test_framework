@@ -3,8 +3,9 @@ import { signUpAccount } from '../../../../src/ui/actions/signUpAccount';
 import { createNewAccount } from '../../../../src/ui/actions/createNewAccount';
 import { transferFund } from '../../../../src/ui/actions/transferFund';
 import { getFormattedDate } from '../../../../src/common/helpers/calendarHelpers';
+import { TRANSFER_SUM } from '../../../../src/common/constants';
+import { Severity } from 'allure-js-commons';
 
-const TRANSFER_SUM = 222;
 let newAccountId;
 let defaultAccount;
 let newAccountBalance;
@@ -30,28 +31,29 @@ test.beforeEach(async ({ page, account, accountsOverviewPage }) => {
 });
 
 test.describe('Account activity transaction data', () => {
-  test('Account activity data table should display correct transaction information', async ({
-    accountActivityPage,
-    accountsOverviewPage,
-  }) => {
-    const transactionDate = getFormattedDate('MM-DD-YYYY', 0);
+  test(
+    'Account activity data table should display correct transaction information',
+    { annotation: { type: 'severity', description: Severity.NORMAL } },
+    async ({ accountActivityPage, accountsOverviewPage }) => {
+      const transactionDate = getFormattedDate('MM-DD-YYYY');
 
-    await accountsOverviewPage.open('overview.htm');
-    await accountsOverviewPage.assertMainTextTitle('Accounts Overview');
-    await accountsOverviewPage.clickAccountLink(newAccountId);
-    await accountsOverviewPage.assertMainTextTitle('Account Details');
+      await accountsOverviewPage.open('overview.htm');
+      await accountsOverviewPage.assertMainTextTitle('Accounts Overview');
+      await accountsOverviewPage.clickAccountLink(newAccountId);
+      await accountsOverviewPage.assertMainTextTitle('Account Details');
 
-    await accountActivityPage.assertTransactionRowData(1, {
-      date: transactionDate,
-      transaction: 'Funds Transfer Received',
-      debit: '0',
-      credit: `${newAccountBalance}`,
-    });
-    await accountActivityPage.assertTransactionRowData(2, {
-      date: transactionDate,
-      transaction: 'Funds Transfer Sent',
-      debit: `${TRANSFER_SUM}`,
-      credit: '0',
-    });
-  });
+      await accountActivityPage.assertTransactionRowData(1, {
+        date: transactionDate,
+        transaction: 'Funds Transfer Received',
+        debit: '0',
+        credit: `${newAccountBalance}`,
+      });
+      await accountActivityPage.assertTransactionRowData(2, {
+        date: transactionDate,
+        transaction: 'Funds Transfer Sent',
+        debit: `${TRANSFER_SUM}`,
+        credit: '0',
+      });
+    },
+  );
 });

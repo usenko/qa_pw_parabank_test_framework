@@ -2,9 +2,7 @@ import { BasePage } from './BasePage';
 
 export class FindTransactionsPage extends BasePage {
   constructor(page, userId = 0) {
-    super(page);
-    this.page = page;
-    this.userId = userId;
+    super(page, userId);
     this.findTransactionButton = this.getButtonByName('Find Transactions');
     this.accountIdSelector = this.page.locator('#accountId');
     this.transactionIdField = this.inputTextLocatorById('transactionId');

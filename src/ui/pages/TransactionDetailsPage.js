@@ -2,9 +2,7 @@ import { BasePage } from './BasePage';
 
 export class TransactionDetailsPage extends BasePage {
   constructor(page, userId = 0) {
-    super(page);
-    this.page = page;
-    this.userId = userId;
+    super(page, userId);
   }
 
   async getTransactionId() {

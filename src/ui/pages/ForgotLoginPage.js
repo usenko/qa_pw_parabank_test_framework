@@ -4,9 +4,7 @@ import { CUSTOMER_LOOKUP_FIELDS } from '../../common/constants';
 
 export class ForgotLoginPage extends BasePage {
   constructor(page, userId = 0) {
-    super(page);
-    this.page = page;
-    this.userId = userId;
+    super(page, userId);
     this.findLoginButton = this.getButtonByName('Find My Login Info');
     this.registerLink = this.page.getByRole('link', { name: 'Register' });
   }

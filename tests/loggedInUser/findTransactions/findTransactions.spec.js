@@ -7,6 +7,8 @@ import { FindTransactionsPage } from '../../../src/ui/pages/FindTransactionsPage
 import { AccountsOverviewPage } from '../../../src/ui/pages/AccountsOverviewPage';
 import { AccountActivityPage } from '../../../src/ui/pages/AccountActivityPage';
 import { TransactionDetailsPage } from '../../../src/ui/pages/TransactionDetailsPage';
+import { TRANSFER_SUM } from '../../../src/common/constants';
+import { Severity } from 'allure-js-commons';
 
 let newAccountId;
 let page;
@@ -14,7 +16,6 @@ let transactionId;
 let transactionDate;
 let transactionDateTomorrow;
 let findTransactionsPage;
-const TRANSFER_SUM = 222;
 
 test.describe(`Find Transactions flow`, () => {
   test.beforeAll(async ({ browser, workerAccount }) => {
@@ -32,7 +33,7 @@ test.describe(`Find Transactions flow`, () => {
     const accountActivityPage = new AccountActivityPage(page);
     const transactionDetailsPage = new TransactionDetailsPage(page);
 
-    transactionDate = getFormattedDate('MM-DD-YYYY', 0);
+    transactionDate = getFormattedDate('MM-DD-YYYY');
     transactionDateTomorrow = getFormattedDate('MM-DD-YYYY', 1);
 
     await accountsOverviewPage.open('overview.htm');
@@ -50,62 +51,78 @@ test.describe(`Find Transactions flow`, () => {
     findTransactionsPage = new FindTransactionsPage(page);
   });
 
-  test(`Should able to find transactions by Id`, async () => {
-    await findTransactionsPage.open('findtrans.htm');
-    await findTransactionsPage.selectAccountId(newAccountId);
-    await findTransactionsPage.fillTransactionIdField(transactionId);
-    await findTransactionsPage.clickFindTransactionButton();
-    await findTransactionsPage.assertMainTextTitle('Transaction Results');
-    await findTransactionsPage.assertTransactionRowData(1, {
-      date: transactionDate,
-      transaction: 'Funds Transfer Received',
-      debit: '0',
-      credit: `${TRANSFER_SUM}`,
-    });
-  });
+  test(
+    `Should able to find transactions by Id`,
+    { annotation: { type: 'severity', description: Severity.NORMAL } },
+    async () => {
+      await findTransactionsPage.open('findtrans.htm');
+      await findTransactionsPage.selectAccountId(newAccountId);
+      await findTransactionsPage.fillTransactionIdField(transactionId);
+      await findTransactionsPage.clickFindTransactionButton();
+      await findTransactionsPage.assertMainTextTitle('Transaction Results');
+      await findTransactionsPage.assertTransactionRowData(1, {
+        date: transactionDate,
+        transaction: 'Funds Transfer Received',
+        debit: '0',
+        credit: `${TRANSFER_SUM}`,
+      });
+    },
+  );
 
-  test(`Should able to find transactions by Date`, async () => {
-    await findTransactionsPage.open('findtrans.htm');
-    await findTransactionsPage.selectAccountId(newAccountId);
-    await findTransactionsPage.fillTransactionDateField(transactionDate);
-    await findTransactionsPage.clickFindTransactionButton(1);
-    await findTransactionsPage.assertMainTextTitle('Transaction Results');
-    await findTransactionsPage.assertTransactionRowData(2, {
-      date: transactionDate,
-      transaction: 'Funds Transfer Received',
-      debit: '0',
-      credit: `${TRANSFER_SUM}`,
-    });
-  });
+  test(
+    `Should able to find transactions by Date`,
+    { annotation: { type: 'severity', description: Severity.NORMAL } },
+    async () => {
+      await findTransactionsPage.open('findtrans.htm');
+      await findTransactionsPage.selectAccountId(newAccountId);
+      await findTransactionsPage.fillTransactionDateField(transactionDate);
+      await findTransactionsPage.clickFindTransactionButton(1);
+      await findTransactionsPage.assertMainTextTitle('Transaction Results');
+      await findTransactionsPage.assertTransactionRowData(2, {
+        date: transactionDate,
+        transaction: 'Funds Transfer Received',
+        debit: '0',
+        credit: `${TRANSFER_SUM}`,
+      });
+    },
+  );
 
-  test(`Should able to find transactions by Date Range`, async () => {
-    await findTransactionsPage.open('findtrans.htm');
-    await findTransactionsPage.selectAccountId(newAccountId);
-    await findTransactionsPage.fillTransactionDateFromField(transactionDate);
-    await findTransactionsPage.fillTransactionDateToField(
-      transactionDateTomorrow,
-    );
-    await findTransactionsPage.clickFindTransactionButton(2);
-    await findTransactionsPage.assertMainTextTitle('Transaction Results');
-    await findTransactionsPage.assertTransactionRowData(2, {
-      date: transactionDate,
-      transaction: 'Funds Transfer Received',
-      debit: '0',
-      credit: `${TRANSFER_SUM}`,
-    });
-  });
+  test(
+    `Should able to find transactions by Date Range`,
+    { annotation: { type: 'severity', description: Severity.NORMAL } },
+    async () => {
+      await findTransactionsPage.open('findtrans.htm');
+      await findTransactionsPage.selectAccountId(newAccountId);
+      await findTransactionsPage.fillTransactionDateFromField(transactionDate);
+      await findTransactionsPage.fillTransactionDateToField(
+        transactionDateTomorrow,
+      );
+      await findTransactionsPage.clickFindTransactionButton(2);
+      await findTransactionsPage.assertMainTextTitle('Transaction Results');
+      await findTransactionsPage.assertTransactionRowData(2, {
+        date: transactionDate,
+        transaction: 'Funds Transfer Received',
+        debit: '0',
+        credit: `${TRANSFER_SUM}`,
+      });
+    },
+  );
 
-  test(`Should able to find transactions by Amount`, async () => {
-    await findTransactionsPage.open('findtrans.htm');
-    await findTransactionsPage.selectAccountId(newAccountId);
-    await findTransactionsPage.fillTransactionAmountField(TRANSFER_SUM);
-    await findTransactionsPage.clickFindTransactionButton(3);
-    await findTransactionsPage.assertMainTextTitle('Transaction Results');
-    await findTransactionsPage.assertTransactionRowData(1, {
-      date: transactionDate,
-      transaction: 'Funds Transfer Received',
-      debit: '0',
-      credit: `${TRANSFER_SUM}`,
-    });
-  });
+  test(
+    `Should able to find transactions by Amount`,
+    { annotation: { type: 'severity', description: Severity.NORMAL } },
+    async () => {
+      await findTransactionsPage.open('findtrans.htm');
+      await findTransactionsPage.selectAccountId(newAccountId);
+      await findTransactionsPage.fillTransactionAmountField(TRANSFER_SUM);
+      await findTransactionsPage.clickFindTransactionButton(3);
+      await findTransactionsPage.assertMainTextTitle('Transaction Results');
+      await findTransactionsPage.assertTransactionRowData(1, {
+        date: transactionDate,
+        transaction: 'Funds Transfer Received',
+        debit: '0',
+        credit: `${TRANSFER_SUM}`,
+      });
+    },
+  );
 });

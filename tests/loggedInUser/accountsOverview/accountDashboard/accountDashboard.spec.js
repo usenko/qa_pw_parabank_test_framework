@@ -21,21 +21,23 @@ test.describe('Account Overview Dashboard', () => {
       }
     },
   );
-  test(`Accounts overview shows default account id and balances`, async ({
-    accountsOverviewPage,
-  }) => {
-    await accountsOverviewPage.open('overview.htm');
-    const accountId = await accountsOverviewPage.getAccountIdByLink();
-    const balance = await accountsOverviewPage.getCellAccountAmountById(
-      accountId,
-      'Balance',
-    );
-    const amount = await accountsOverviewPage.getCellAccountAmountById(
-      accountId,
-      'Available Amount',
-    );
-    await accountsOverviewPage.assertAccountIdIsVisible(accountId);
-    await accountsOverviewPage.assertValueIsGreaterThanZero(balance);
-    await accountsOverviewPage.assertValueIsGreaterThanZero(amount);
-  });
+  test(
+    `Accounts overview shows default account id and balances`,
+    { annotation: { type: 'severity', description: Severity.NORMAL } },
+    async ({ accountsOverviewPage }) => {
+      await accountsOverviewPage.open('overview.htm');
+      const accountId = await accountsOverviewPage.getAccountIdByLink();
+      const balance = await accountsOverviewPage.getCellAccountAmountById(
+        accountId,
+        'Balance',
+      );
+      const amount = await accountsOverviewPage.getCellAccountAmountById(
+        accountId,
+        'Available Amount',
+      );
+      await accountsOverviewPage.assertAccountIdIsVisible(accountId);
+      await accountsOverviewPage.assertValueIsGreaterThanZero(balance);
+      await accountsOverviewPage.assertValueIsGreaterThanZero(amount);
+    },
+  );
 });

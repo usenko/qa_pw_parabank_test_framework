@@ -5,13 +5,13 @@ import { transferFund } from '../../../../src/ui/actions/transferFund';
 import { getCurrentMonth } from '../../../../src/common/helpers/calendarHelpers';
 import { AccountActivityPage } from '../../../../src/ui/pages/AccountActivityPage';
 import { AccountsOverviewPage } from '../../../../src/ui/pages/AccountsOverviewPage';
+import { TRANSFER_SUM } from '../../../../src/common/constants';
 import { Severity } from 'allure-js-commons';
 
 let page;
 let accountActivityPage;
 let newAccountId;
 let defaultAccount;
-const TRANSFER_SUM = 222;
 const DEFAULT = 100;
 
 test.beforeAll(async ({ browser, workerAccount }) => {

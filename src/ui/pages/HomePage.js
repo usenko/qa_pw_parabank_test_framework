@@ -2,9 +2,7 @@ import { BasePage } from './BasePage';
 
 export class HomePage extends BasePage {
   constructor(page, userId = 0) {
-    super(page);
-    this.page = page;
-    this.userId = userId;
+    super(page, userId);
     this.loginPanel = this.page.locator('#loginPanel');
     this.loginButton = this.loginPanel.getByRole('button', { name: 'Log in' });
     this.forgotLoginButton = this.loginPanel.getByRole('link', {
@@ -33,6 +31,14 @@ export class HomePage extends BasePage {
           this.loginButton.click(),
         ]);
       }
+    });
+  }
+
+  async login({ username, password }, { isSuccess = true } = {}) {
+    await this.step(`Log in as '${username}'`, async () => {
+      await this.fillInputFieldByName('username', username);
+      await this.fillInputFieldByName('password', password);
+      await this.clickLoginButton({ isSuccess });
     });
   }
 

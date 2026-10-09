@@ -4,9 +4,7 @@ import { expect } from '../../common/helpers/pwHelpers';
 
 export class BillPayPage extends BasePage {
   constructor(page, userId = 0) {
-    super(page);
-    this.page = page;
-    this.userId = userId;
+    super(page, userId);
     this.sendPaymentButton = this.getButtonByName('Send Payment');
   }
 

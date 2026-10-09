@@ -4,13 +4,13 @@ import { createNewAccount } from '../../../../src/ui/actions/createNewAccount';
 import { transferFund } from '../../../../src/ui/actions/transferFund';
 import { AccountActivityPage } from '../../../../src/ui/pages/AccountActivityPage';
 import { AccountsOverviewPage } from '../../../../src/ui/pages/AccountsOverviewPage';
+import { TRANSFER_SUM } from '../../../../src/common/constants';
 import { Severity } from 'allure-js-commons';
 
 let page;
 let accountActivityPage;
 let newAccountId;
 let defaultAccount;
-const TRANSFER_SUM = 222;
 const DEFAULT = 100;
 
 const testParameters = [

@@ -1,18 +1,12 @@
 import { test } from '../../_fixtures/fixtures';
 import { signUpAccount } from '../../../src/ui/actions/signUpAccount';
 import { createNewAccount } from '../../../src/ui/actions/createNewAccount';
+import { TRANSFER_SUM } from '../../../src/common/constants';
 import { Severity } from 'allure-js-commons';
 
-const testParameters = [
-  {
-    accountType: 'SAVINGS',
-  },
-  {
-    accountType: 'CHECKING',
-  },
-];
+const testParameters = ['SAVINGS', 'CHECKING'];
 
-testParameters.forEach(({ accountType }) => {
+testParameters.forEach(accountType => {
   test.describe(`Transfer funds flow`, () => {
     test.beforeEach(async ({ page, account }, testInfo) => {
       await signUpAccount(page, account);
@@ -22,13 +16,12 @@ testParameters.forEach(({ accountType }) => {
 
     test(
       `Transfer funds to ${accountType} account and check updated balance`,
-      { annotation: { type: Severity.CRITICAL } },
+      { annotation: { type: 'severity', description: Severity.CRITICAL } },
       async (
         { accountNavMenu, transferFundsPage, accountsOverviewPage },
         testInfo,
       ) => {
         const newAccountId = testInfo.newAccountId;
-        const TRANSFER_SUM = 222;
 
         await accountsOverviewPage.open('overview.htm');
         await accountsOverviewPage.assertMainTextTitle('Accounts Overview');

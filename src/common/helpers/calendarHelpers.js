@@ -6,12 +6,9 @@ export function getCurrentMonth(monthNumber = 0) {
   return date.toLocaleDateString('en-US', { month: 'long' });
 }
 
-export function getFormattedDate(format = 'DD-MM-YYYY', daysOffset) {
+export function getFormattedDate(format = 'DD-MM-YYYY', daysOffset = 0) {
   const date = new Date();
-
-  if (daysOffset != 0) {
-    date.setDate(date.getDate() + daysOffset);
-  }
+  date.setDate(date.getDate() + daysOffset);
 
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
