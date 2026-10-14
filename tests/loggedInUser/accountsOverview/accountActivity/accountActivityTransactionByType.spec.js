@@ -5,6 +5,7 @@ import { transferFund } from '../../../../src/ui/actions/transferFund';
 import { AccountActivityPage } from '../../../../src/ui/pages/AccountActivityPage';
 import { AccountsOverviewPage } from '../../../../src/ui/pages/AccountsOverviewPage';
 import { TRANSFER_SUM } from '../../../../src/common/constants';
+import { generateNewAccountUserData } from '../../../../src/common/testData/generateNewAccountUserData';
 import { Severity } from 'allure-js-commons';
 
 let page;
@@ -12,6 +13,7 @@ let accountActivityPage;
 let newAccountId;
 let defaultAccount;
 const DEFAULT = 100;
+let context;
 
 const testParameters = [
   {
@@ -71,13 +73,14 @@ const testParameters = [
   },
 ];
 
-test.beforeAll(async ({ browser, workerAccount }) => {
-  const context = await browser.newContext();
+test.beforeAll(async ({ browser, logger }) => {
+  context = await browser.newContext();
   page = await context.newPage();
 
   const accountsOverviewPage = new AccountsOverviewPage(page);
 
-  await signUpAccount(page, workerAccount);
+  const account = generateNewAccountUserData(logger);
+  await signUpAccount(page, account);
   await accountsOverviewPage.open('overview.htm');
   defaultAccount = await accountsOverviewPage.getAccountIdByLink();
 
@@ -95,7 +98,7 @@ test.beforeAll(async ({ browser, workerAccount }) => {
 });
 
 test.afterAll(async () => {
-  if (page) await page.close();
+  await context?.close();
 });
 
 test.beforeEach(async () => {

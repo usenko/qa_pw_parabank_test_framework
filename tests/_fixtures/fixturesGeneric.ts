@@ -14,7 +14,6 @@ export const test = base.extend<
   },
   {
     logger: Logger;
-    workerAccount: any;
   }
 >({
   logger: [
@@ -22,14 +21,6 @@ export const test = base.extend<
       const logger = new Logger('error');
 
       await use(logger);
-    },
-    { scope: 'worker' },
-  ],
-
-  workerAccount: [
-    async ({ logger }, use) => {
-      const data = generateNewAccountUserData(logger);
-      await use(data);
     },
     { scope: 'worker' },
   ],

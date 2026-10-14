@@ -8,6 +8,7 @@ import { AccountsOverviewPage } from '../../../src/ui/pages/AccountsOverviewPage
 import { AccountActivityPage } from '../../../src/ui/pages/AccountActivityPage';
 import { TransactionDetailsPage } from '../../../src/ui/pages/TransactionDetailsPage';
 import { TRANSFER_SUM } from '../../../src/common/constants';
+import { generateNewAccountUserData } from '../../../src/common/testData/generateNewAccountUserData';
 import { Severity } from 'allure-js-commons';
 
 let newAccountId;
@@ -16,13 +17,15 @@ let transactionId;
 let transactionDate;
 let transactionDateTomorrow;
 let findTransactionsPage;
+let context;
 
 test.describe(`Find Transactions flow`, () => {
-  test.beforeAll(async ({ browser, workerAccount }) => {
-    const context = await browser.newContext();
+  test.beforeAll(async ({ browser, logger }) => {
+    context = await browser.newContext();
     page = await context.newPage();
 
-    await signUpAccount(page, workerAccount);
+    const account = generateNewAccountUserData(logger);
+    await signUpAccount(page, account);
 
     const accountId = await createNewAccount(page, 'SAVINGS');
     newAccountId = accountId;
@@ -44,7 +47,7 @@ test.describe(`Find Transactions flow`, () => {
   });
 
   test.afterAll(async () => {
-    if (page) await page.close();
+    await context?.close();
   });
 
   test.beforeEach(async () => {
