@@ -52,12 +52,9 @@ test.describe('Open New Account Flow', () => {
         );
 
         await accountsOverviewPage.clickAccountLink(newAccountId);
-        const accountDetails =
-          await accountsOverviewPage.getAccountDetailsData();
         await accountsOverviewPage.assertAccountDetailData(
           'Account Type',
           accountType,
-          accountDetails,
         );
       },
     );

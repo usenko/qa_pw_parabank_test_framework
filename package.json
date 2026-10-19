@@ -26,14 +26,10 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "allure:clean": "rimraf allure-results allure-report",
+    "allure:open": "allure open allure-report",
     "allure:serve": "allure serve allure-results",
     "allure:generate": "allure generate allure-results --clean -o allure-report",
     "lint": "eslint"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.{js,md}": [

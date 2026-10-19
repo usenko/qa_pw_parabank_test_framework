@@ -16,7 +16,7 @@ export function generateNewAccountUserData(logger = null) {
     phone: faker.phone.number(),
     ssn: faker.string.numeric('###-##-####'),
     username: `${firstName}_${lastName}_${suffix}`
-      .replaceAll(`'`)
+      .replaceAll("'", '')
       .toLowerCase(),
     password: password,
     repeatedPassword: password,

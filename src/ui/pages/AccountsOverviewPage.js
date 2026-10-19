@@ -66,34 +66,23 @@ export class AccountsOverviewPage extends BasePage {
     );
   }
 
-  async getAccountDetailsData() {
-    const rows = this.detailsTable.getByRole('row');
-    const rowCount = await rows.count();
-    const accountData = {};
-
-    for (let i = 0; i < rowCount; i++) {
-      const currentRow = rows.nth(i);
-      const cells = currentRow.getByRole('cell');
-
-      if ((await cells.count()) >= 2) {
-        const rawKey = await cells.nth(0).innerText();
-        const key = rawKey.replace(':', '').trim();
-        const value = await cells.nth(1).innerText();
-
-        if (value.includes('$')) {
-          accountData[key] = parseAndFormatNumber(value);
-        } else {
-          accountData[key] = value;
-        }
-      }
-    }
-    return accountData;
+  getDetailValueCell(label) {
+    return this.detailsTable
+      .getByRole('row')
+      .filter({
+        has: this.page.getByRole('cell', { name: label }),
+      })
+      .getByRole('cell')
+      .nth(1);
   }
 
-  async assertAccountDetailData(keyData, expectedValue, actualData) {
-    await this.step(`Assert "${keyData}" account detail data`, async () => {
-      expect(actualData).toHaveProperty(keyData);
-      expect(actualData[keyData]).toEqual(expectedValue);
+  async assertAccountDetailData(keyData, expectedValue) {
+    const amoundFields = ['Available', 'Balance'];
+    const expectedText = amoundFields.includes(keyData)
+      ? `$${Number(expectedValue).toFixed(2)}`
+      : String(expectedValue);
+    await this.step(`Assert "${keyData}" equals ${expectedText}`, async () => {
+      await expect(this.getDetailValueCell(keyData)).toHaveText(expectedText);
     });
   }
 
