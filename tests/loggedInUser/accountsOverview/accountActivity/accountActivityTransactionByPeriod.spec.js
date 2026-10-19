@@ -16,38 +16,34 @@ let defaultAccount;
 const DEFAULT = 100;
 let context;
 
-test.beforeAll(async ({ browser, logger }) => {
-  context = await browser.newContext();
-  page = await context.newPage();
-
-  const accountsOverviewPage = new AccountsOverviewPage(page);
-
-  const account = generateNewAccountUserData(logger);
-  await signUpAccount(page, account);
-  await accountsOverviewPage.open('overview.htm');
-  defaultAccount = await accountsOverviewPage.getAccountIdByLink();
-
-  newAccountId = await createNewAccount(page, 'SAVINGS');
-
-  await transferFund(page, {
-    value: TRANSFER_SUM,
-    fromAccountId: newAccountId,
-    toAccountId: defaultAccount,
-  });
-  await accountsOverviewPage.open('overview.htm');
-  await accountsOverviewPage.assertMainTextTitle('Accounts Overview');
-  await accountsOverviewPage.clickAccountLink(defaultAccount);
-});
-
-test.afterAll(async () => {
-  await context?.close();
-});
-
-test.beforeEach(async () => {
-  accountActivityPage = new AccountActivityPage(page);
-});
-
 test.describe('Transaction filtering by transaction date', () => {
+  test.beforeAll(async ({ browser, logger }) => {
+    context = await browser.newContext();
+    page = await context.newPage();
+
+    const accountsOverviewPage = new AccountsOverviewPage(page);
+
+    const account = generateNewAccountUserData(logger);
+    await signUpAccount(page, account);
+    await accountsOverviewPage.open('overview.htm');
+    defaultAccount = await accountsOverviewPage.getAccountIdByLink();
+
+    newAccountId = await createNewAccount(page, 'SAVINGS');
+
+    await transferFund(page, {
+      value: TRANSFER_SUM,
+      fromAccountId: newAccountId,
+      toAccountId: defaultAccount,
+    });
+    await accountsOverviewPage.open('overview.htm');
+    await accountsOverviewPage.assertMainTextTitle('Accounts Overview');
+    await accountsOverviewPage.clickAccountLink(defaultAccount);
+  });
+
+  test.beforeEach(async () => {
+    accountActivityPage = new AccountActivityPage(page);
+  });
+
   test(
     'Should be able to filter activities by current month',
     { annotation: { type: 'severity', description: Severity.MINOR } },
@@ -90,4 +86,8 @@ test.describe('Transaction filtering by transaction date', () => {
       );
     },
   );
+
+  test.afterAll(async () => {
+    await context?.close();
+  });
 });

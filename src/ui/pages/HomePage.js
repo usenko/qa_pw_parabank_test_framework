@@ -58,7 +58,7 @@ export class HomePage extends BasePage {
 
   async assertLoginPanelIsVisible() {
     await this.step(`Assert login panel is visible`, async () => {
-      await this.loginPanel.waitFor({ state: 'visible' });
+      await this.loginPanel.waitFor();
     });
   }
 }
