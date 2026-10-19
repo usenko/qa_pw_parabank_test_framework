@@ -103,10 +103,23 @@ export class AccountsOverviewPage extends BasePage {
     });
   }
 
-  async assertValueIsGreaterThanZero(value) {
-    await this.step(`Assert Account value is greater than 0`, async () => {
-      expect(Number(value)).toBeGreaterThan(0);
-    });
+  async assertAccountValueEquals(accountId, columnName, expectedValue) {
+    await this.step(
+      `Assert ${columnName} for account:${accountId} equals ${expectedValue}`,
+      async () => {
+        const columns = {
+          balance: 1,
+          'available amount': 2,
+        };
+        const columnIndex = columns[columnName.toLowerCase()];
+        const expectedString = `$${Number(expectedValue).toFixed(2)}`;
+
+        const cellLocator = this.accountRowLocatorById(accountId).locator(
+          this.getAccountCellByIndex(columnIndex),
+        );
+        await expect(cellLocator).toHaveText(expectedString);
+      },
+    );
   }
 
   async assertAccountsOverviewHasHeaderCell(cellname) {
