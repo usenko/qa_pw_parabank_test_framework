@@ -36,8 +36,16 @@ test.describe('Account Overview Dashboard', () => {
         'Available Amount',
       );
       await accountsOverviewPage.assertAccountIdIsVisible(accountId);
-      await accountsOverviewPage.assertValueIsGreaterThanZero(balance);
-      await accountsOverviewPage.assertValueIsGreaterThanZero(amount);
+      await accountsOverviewPage.assertAccountValueEquals(
+        accountId,
+        'Balance',
+        balance,
+      );
+      await accountsOverviewPage.assertAccountValueEquals(
+        accountId,
+        'Available Amount',
+        amount,
+      );
     },
   );
 });

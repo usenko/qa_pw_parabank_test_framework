@@ -29,13 +29,10 @@ test.describe('Account Details', () => {
       };
       await accountsOverviewPage.assertAccountIdIsVisible(accountId);
       await accountsOverviewPage.clickAccountLink(accountId);
-      const accountDetailsData =
-        await accountsOverviewPage.getAccountDetailsData();
       for (const [key, expectedDataValue] of Object.entries(accountDetails)) {
         await accountsOverviewPage.assertAccountDetailData(
           key,
           expectedDataValue,
-          accountDetailsData,
         );
       }
     },

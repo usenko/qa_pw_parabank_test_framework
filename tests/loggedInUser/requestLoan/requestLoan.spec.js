@@ -67,13 +67,10 @@ test.describe('Request Loan Flow', () => {
         Available: LOAN_AMOUNT,
       };
       await accountsOverviewPage.clickAccountLink(newAccountId);
-      const accountDetailsData =
-        await accountsOverviewPage.getAccountDetailsData();
       for (const [key, expectedDataValue] of Object.entries(accountDetails)) {
         await accountsOverviewPage.assertAccountDetailData(
           key,
           expectedDataValue,
-          accountDetailsData,
         );
       }
     },
